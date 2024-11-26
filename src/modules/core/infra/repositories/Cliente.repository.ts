@@ -5,6 +5,7 @@ import { Cliente } from '../../domain/Cliente'
 import { ClienteMapper } from '../mappers/Cliente.mapper'
 import { ClienteJaCadastradoException } from '../../domain/exceptions/ClienteJaCadastrado.exception'
 import { ClienteNaoEcontradoException } from '../../domain/exceptions/ClienteNaoEcontrado.exception'
+import { ContaBancariaModel } from '../models/Conta.model'
 
 @Injectable()
 export class ClienteRepositoryImpl implements ClienteRepository {
@@ -32,6 +33,12 @@ export class ClienteRepositoryImpl implements ClienteRepository {
                 where: {
                     cpf: id,
                 },
+                include: [
+                    {
+                        model: ContaBancariaModel,
+                        attributes: ['numeroConta'],
+                    },
+                ],
             })
             if (!buscarCliente) throw new ClienteNaoEcontradoException(`Nenhum cliente com cpf ${id} foi encontrado`)
             const cliente = this.clienteMapper.modelToDomain(buscarCliente)

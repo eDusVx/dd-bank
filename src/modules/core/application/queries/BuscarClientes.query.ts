@@ -1,5 +1,5 @@
 import { Inject, Logger } from '@nestjs/common'
-import { ClienteDto } from '../../domain/dto/Cliente/Cliente.dto'
+import { ClienteDto } from '../../domain/dto/Cliente.dto'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 
 export class BuscarClientesQuery {

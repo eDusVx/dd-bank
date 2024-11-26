@@ -1,29 +1,35 @@
-import { Column, DataType, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript'
+import { Column, DataType, Model, PrimaryKey, Table, HasMany } from 'sequelize-typescript'
+import { ContaBancariaModel } from './Conta.model'
 
 @Table({
     tableName: 'cliente',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
 })
 export class ClienteModel extends Model {
     @PrimaryKey
-    @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, allowNull: false })
-    id: string
-
     @Column({
-        type: DataType.TEXT,
+        type: DataType.STRING,
         allowNull: false,
-    })
-    nome: string
-
-    @Unique
-    @Column({
-        type: DataType.TEXT,
-        allowNull: false,
+        field: 'cpf',
     })
     cpf: string
 
     @Column({
+        type: DataType.STRING,
+        allowNull: false,
+        field: 'nome',
+    })
+    nome: string
+
+    @Column({
         type: DataType.DATE,
         allowNull: false,
+        field: 'data_nascimento',
     })
     dataNascimento: Date
+
+    @HasMany(() => ContaBancariaModel)
+    contas: ContaBancariaModel[]
 }

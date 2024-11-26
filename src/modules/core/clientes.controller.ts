@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpException, Inject, Logger, Param, Post } from '@nestjs/common'
-import { ClienteDto, CriarClienteDto } from './domain/dto/Cliente/Cliente.dto'
+import { ClienteDto, CriarClienteDto } from './domain/dto/Cliente.dto'
 import { CriarClienteUseCase } from './application/usecases/CriarCliente.usecase'
 import { BuscarClientesQuery } from './application/queries/BuscarClientes.query'
 

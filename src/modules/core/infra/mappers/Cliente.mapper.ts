@@ -1,38 +1,36 @@
 import { Injectable } from '@nestjs/common'
 import { ClienteModel } from '../models/Cliente.model'
 import { Cliente } from '../../domain/Cliente'
+import { ContaMapper } from './Conta.mapper'
 
 @Injectable()
 export class ClienteMapper {
-    public async modelToDomain(model: ClienteModel): Promise<Cliente> {
+    constructor(private readonly contaMapper: ContaMapper) {}
+    public modelToDomain(model: ClienteModel): Cliente {
         try {
-            const domain = Cliente.carregar(
-                {
-                    nome: model.nome,
-                    cpf: model.cpf,
-                    dataNascimento: model.dataNascimento,
-                },
-                model.id,
-            )
-            return domain
+            const clienteDomain = Cliente.carregar({
+                nome: model.nome,
+                cpf: model.cpf,
+                dataNascimento: model.dataNascimento,
+                contas: model.contas.map((conta) => conta.numeroConta),
+            })
+            return clienteDomain
         } catch (e) {
             throw e
         }
     }
 
-    public async modelListToDomain(model: ClienteModel[]): Promise<Cliente[]> {
+    public modelListToDomain(model: ClienteModel[]): Cliente[] {
         try {
             let clientesDomain: Cliente[] = []
 
             for (const cliente of model) {
-                const domain = Cliente.carregar(
-                    {
-                        nome: cliente.nome,
-                        cpf: cliente.cpf,
-                        dataNascimento: cliente.dataNascimento,
-                    },
-                    cliente.id,
-                )
+                const domain = Cliente.carregar({
+                    nome: cliente.nome,
+                    cpf: cliente.cpf,
+                    dataNascimento: cliente.dataNascimento,
+                    contas: cliente.contas.map((conta) => conta.numeroConta),
+                })
                 clientesDomain.push(domain)
             }
             return clientesDomain
@@ -42,11 +40,9 @@ export class ClienteMapper {
     }
 
     public domainToModel(domain: Cliente): ClienteModel {
-        console.log('ID', domain.getId())
         const model = new ClienteModel({
-            id: domain.getId(),
-            nome: domain.getNome(),
             cpf: domain.getCpf(),
+            nome: domain.getNome(),
             dataNascimento: domain.getDataNascimento(),
         })
 

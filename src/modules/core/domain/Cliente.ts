@@ -1,24 +1,22 @@
-import { v4 as uuidv4 } from 'uuid'
-import { ClienteDto, CriarClienteDto } from './dto/Cliente/Cliente.dto'
+import { ClienteDto, CriarClienteDto } from './dto/Cliente.dto'
 
 export class Cliente {
-    private id: string
-    private nome: string
     private cpf: string
+    private nome: string
     private dataNascimento: Date
+    private contas: number[]
 
-    private constructor(id: string) {
-        this.id = id
+    private constructor(cpf: string) {
+        this.cpf = cpf
     }
 
-    public static async criar(props: CriarClienteDto): Promise<Cliente> {
-        const id = uuidv4()
-
-        const instance = new Cliente(id)
+    public static criar(props: CriarClienteDto): Cliente {
+        const instance = new Cliente(props.cpf)
         try {
             instance.setNome(props.nome)
             instance.setCpf(props.cpf)
             instance.setDataNascimento(props.dataNascimento)
+            instance.setContas([])
         } catch (e) {
             throw e
         }
@@ -26,12 +24,13 @@ export class Cliente {
         return instance
     }
 
-    public static carregar(props: CriarClienteDto, id: string): Cliente {
-        const instance = new Cliente(id)
+    public static carregar(props: CriarClienteDto): Cliente {
+        const instance = new Cliente(props.cpf)
         try {
             instance.setNome(props.nome)
             instance.setCpf(props.cpf)
             instance.setDataNascimento(props.dataNascimento)
+            instance.setContas(props.contas)
         } catch (e) {
             throw e
         }
@@ -63,6 +62,14 @@ export class Cliente {
         }
     }
 
+    private setContas(contas: number[]) {
+        try {
+            this.contas = contas
+        } catch (e) {
+            throw e
+        }
+    }
+
     public getNome(): string {
         return this.nome
     }
@@ -75,16 +82,16 @@ export class Cliente {
         return this.dataNascimento
     }
 
-    public getId(): string {
-        return this.id
+    public getContas(): number[] {
+        return this.contas
     }
 
     public toDTO(): ClienteDto {
         return {
-            id: this.getId(),
-            nome: this.getNome(),
             cpf: this.getCpf(),
+            nome: this.getNome(),
             dataNascimento: this.getDataNascimento(),
+            contas: this.getContas(),
         }
     }
 }
