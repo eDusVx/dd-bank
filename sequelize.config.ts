@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
-import { coreModels } from 'src/modules/core/infra/models'
-import { sharedModels } from 'src/modules/shared/infra/models'
+import { coreModels } from './src/modules/core/infra/models'
+import { sharedModels } from './src/modules/shared/infra/models'
 
 export const databaseProviders = [
     {
@@ -13,11 +13,10 @@ export const databaseProviders = [
                 host: process.env.DB_HOST,
                 port: Number(process.env.DB_PORT),
                 dialect: 'postgres',
+                logging: process.env.DB_LOGGING == 'true',
             })
 
             sequelize.addModels([...coreModels, ...sharedModels])
-
-            await sequelize.sync()
 
             return sequelize
         },
