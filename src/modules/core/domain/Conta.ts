@@ -1,5 +1,6 @@
 import { CarregarContaDto, ContaDto, CriarContaDto } from './dto/Conta.dto'
-import { MovimentacaoFinanceira } from './MovimentacaoFinanceira'
+import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
+import { MovimentacaoFinanceira, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
 
 export enum STATUS_CONTA {
     ATIVA = 'ATIVA',
@@ -113,6 +114,26 @@ export class Conta {
             this.setStatus(status)
         } catch (e) {
             throw e
+        }
+    }
+
+    public efetuarDeposito(movimentacao: MovimentacaoFinanceira): void {
+        try {
+            this.validarStatusConta(movimentacao.getTipoMovimentacao())
+
+            movimentacao.validarDeposito(this.numeroConta)
+
+            this.movimentacaoFinanceira.push(movimentacao)
+        } catch (e) {
+            throw e
+        }
+    }
+
+    private validarStatusConta(tipoMovimentacao: TIPO_MOVIMENTACAO): void {
+        if (this.status != STATUS_CONTA.ATIVA) {
+            throw new StatusContaInvalidoEception(
+                `A conta precisa estar com status ${STATUS_CONTA.ATIVA} para efetuar a operação ${tipoMovimentacao}`,
+            )
         }
     }
 }

@@ -2,9 +2,6 @@ import { IsString, IsNumber, Min, IsEnum, IsDate, IsPositive } from 'class-valid
 import { TIPO_MOVIMENTACAO } from '../MovimentacaoFinanceira'
 
 export class CriarMovimentacaoFinanceiraDto {
-    @IsString({ message: 'O id deve ser uma string' })
-    id: string
-
     @IsNumber({}, { message: 'O valor deve ser um número' })
     @IsPositive({ message: 'O valor deve ser positivo' })
     valor: number
@@ -17,11 +14,11 @@ export class CriarMovimentacaoFinanceiraDto {
 
     @IsNumber({}, { message: 'O número da conta de origem deve ser um número' })
     @Min(1, { message: 'O número da conta de origem deve ser maior que 0' })
-    numeroContaOrigem: number
+    numeroContaOrigem?: number
 
     @IsNumber({}, { message: 'O número da conta de destino deve ser um número' })
     @Min(1, { message: 'O número da conta de destino deve ser maior que 0' })
-    numeroContaDestino: number
+    numeroContaDestino?: number
 }
 
 export class MovimentacaoFinanceiraDto {
@@ -44,5 +41,11 @@ export class MovimentacaoFinanceiraDto {
 
     @IsNumber({}, { message: 'O número da conta de destino deve ser um número' })
     @Min(1, { message: 'O número da conta de destino deve ser maior que 0' })
+    numeroContaDestino: number
+}
+
+export class EfeturarDepositoDto {
+    valor: number
+    tipoMovimentacao: TIPO_MOVIMENTACAO
     numeroContaDestino: number
 }
