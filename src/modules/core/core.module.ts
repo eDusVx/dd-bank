@@ -5,10 +5,13 @@ import { mappers } from './infra/mappers'
 import { queries } from './application/queries'
 import { ClienteRepositoryImpl } from './infra/repositories/Cliente.repository'
 import { coreModels, modelsProviders } from './infra/models'
+import { ContasController } from './contas.controller'
+import { MovimentacoesController } from './movimentacoes.controller'
+import { ContaRepositoryImpl } from './infra/repositories/Conta.repository'
 
 @Module({
     imports: [...coreModels],
-    controllers: [ClientesController],
+    controllers: [ClientesController, ContasController, MovimentacoesController],
     providers: [
         ...queries,
         ...mappers,
@@ -17,6 +20,10 @@ import { coreModels, modelsProviders } from './infra/models'
         {
             provide: 'ClienteRepository',
             useClass: ClienteRepositoryImpl,
+        },
+        {
+            provide: 'ContaRepository',
+            useClass: ContaRepositoryImpl,
         },
     ],
 })

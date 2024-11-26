@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { ClienteModel } from '../models/Cliente.model'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 import { Cliente } from '../../domain/Cliente'
@@ -9,7 +9,6 @@ import { ContaBancariaModel } from '../models/Conta.model'
 
 @Injectable()
 export class ClienteRepositoryImpl implements ClienteRepository {
-    private logger = new Logger('clienteRepository')
     constructor(
         @Inject('ClienteModel')
         private readonly clienteModel: typeof ClienteModel,

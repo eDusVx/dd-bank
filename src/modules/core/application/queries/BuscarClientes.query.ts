@@ -1,10 +1,8 @@
-import { Inject, Logger } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { ClienteDto } from '../../domain/dto/Cliente.dto'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 
 export class BuscarClientesQuery {
-    private readonly logger = new Logger(BuscarClientesQuery.name)
-
     constructor(
         @Inject('ClienteRepository')
         private readonly clienteRepository: ClienteRepository,

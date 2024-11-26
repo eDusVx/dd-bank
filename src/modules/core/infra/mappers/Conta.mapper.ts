@@ -11,6 +11,7 @@ export class ContaMapper {
                     saldo: model.saldo,
                     status: model.status,
                     clienteId: model.clienteId,
+                    movimentacaoFinanceira: [],
                 },
                 model.numeroConta,
             )
@@ -30,6 +31,7 @@ export class ContaMapper {
                         saldo: conta.saldo,
                         status: conta.status,
                         clienteId: conta.clienteId,
+                        movimentacaoFinanceira: [],
                     },
                     conta.numeroConta,
                 )

@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { ClienteModel } from '../models/Cliente.model'
 import { Cliente } from '../../domain/Cliente'
-import { ContaMapper } from './Conta.mapper'
 
 @Injectable()
 export class ClienteMapper {
-    constructor(private readonly contaMapper: ContaMapper) {}
+    constructor() {}
     public modelToDomain(model: ClienteModel): Cliente {
         try {
             const clienteDomain = Cliente.carregar({

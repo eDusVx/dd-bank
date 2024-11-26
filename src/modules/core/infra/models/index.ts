@@ -7,6 +7,10 @@ export const modelsProviders = [
         provide: 'ClienteModel',
         useValue: ClienteModel,
     },
+    {
+        provide: 'ContaModel',
+        useValue: ContaBancariaModel,
+    },
 ]
 
 export const coreModels = [ClienteModel, MovimentacaoFinanceiraModel, ContaBancariaModel]

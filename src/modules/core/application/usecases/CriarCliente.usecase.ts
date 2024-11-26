@@ -1,12 +1,10 @@
-import { Inject, Logger } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { ClienteDto, CriarClienteDto } from '../../domain/dto/Cliente.dto'
 import { Cliente } from '../../domain/Cliente'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 import { ParametrosInvalidosException } from '../../domain/exceptions/ParametrosInvalidos.exception'
 
 export class CriarClienteUseCase {
-    private logger = new Logger('RegistrarUsuarioUseCase')
-
     constructor(
         @Inject('ClienteRepository')
         private readonly clienteRepository: ClienteRepository,

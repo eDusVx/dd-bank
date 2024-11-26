@@ -1,7 +1,15 @@
-import { IsString, IsNotEmpty, Length, Matches, IsDate, MaxDate } from 'class-validator'
+import { IsString, IsNotEmpty, Length, Matches, IsDate, MaxDate, IsArray, Validate, IsOptional } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { Conta } from '../Conta'
-import { ContaDto } from './Conta.dto'
+
+class IsGreaterThanZero {
+    validate(value: number) {
+        return value > 0
+    }
+
+    defaultMessage() {
+        return 'O número deve ser maior que 0'
+    }
+}
 
 export class CriarClienteDto {
     @IsString({ message: 'O nome deve ser uma string' })
@@ -20,8 +28,12 @@ export class CriarClienteDto {
     @MaxDate(new Date(), { message: 'A data de nascimento deve ser anterior à data atual.' })
     dataNascimento: Date
 
+    @IsOptional()
+    @IsArray({ message: 'Contas deve ser um array' })
+    @Validate(IsGreaterThanZero, { each: true, message: 'O numero da conta deve ser maior que 0' })
     contas?: number[]
 }
+
 export class ClienteDto {
     @IsString({ message: 'O nome deve ser uma string' })
     @IsNotEmpty({ message: 'O nome não pode ser vazio.' })
@@ -39,5 +51,8 @@ export class ClienteDto {
     @MaxDate(new Date(), { message: 'A data de nascimento deve ser anterior à data atual.' })
     dataNascimento: Date
 
-    contas?: number[]
+    @IsArray({ message: 'Contas deve ser um array' })
+    @Validate(IsGreaterThanZero, { each: true, message: 'O numero da conta deve ser maior que 0' })
+    @IsNotEmpty({ message: 'A propriedade contas não pode ser nula.' })
+    contas: number[]
 }

@@ -1,4 +1,4 @@
-import { ContaDto, CriarContaDto } from './dto/Conta.dto'
+import { CarregarContaDto, ContaDto, CriarContaDto } from './dto/Conta.dto'
 import { MovimentacaoFinanceira } from './MovimentacaoFinanceira'
 
 export enum STATUS_CONTA {
@@ -18,7 +18,7 @@ export class Conta {
     }
 
     public static criar(props: CriarContaDto): Conta {
-        const instance = new Conta()
+        const instance = new Conta(props.numeroConta)
         try {
             instance.setSaldo(0)
             instance.setStatus(STATUS_CONTA.ATIVA)
@@ -30,7 +30,7 @@ export class Conta {
         return instance
     }
 
-    public static carregar(props: CriarContaDto, numeroConta: number): Conta {
+    public static carregar(props: CarregarContaDto, numeroConta: number): Conta {
         const instance = new Conta(numeroConta)
         try {
             instance.setSaldo(props.saldo)
@@ -102,7 +102,17 @@ export class Conta {
             saldo: this.getSaldo(),
             status: this.getStatus(),
             clienteId: this.getClienteId(),
-            movimentacaoFinanceira: this.movimentacaoFinanceira.map((movimentacao) => movimentacao.toDTO()),
+            movimentacaoFinanceira: this.movimentacaoFinanceira
+                ? this.movimentacaoFinanceira.map((movimentacao) => movimentacao.toDTO())
+                : [],
+        }
+    }
+
+    public atualizarStatus(status: STATUS_CONTA): void {
+        try {
+            this.setStatus(status)
+        } catch (e) {
+            throw e
         }
     }
 }
