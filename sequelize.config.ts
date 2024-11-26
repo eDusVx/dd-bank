@@ -13,7 +13,7 @@ export const databaseProviders = [
                 host: process.env.DB_HOST,
                 port: Number(process.env.DB_PORT),
                 dialect: 'postgres',
-                logging: process.env.DB_LOGGING == 'true',
+                logging: String(process.env.DB_LOGGING) == 'true',
             })
 
             sequelize.addModels([...coreModels, ...sharedModels])

@@ -1,11 +1,39 @@
-version: "3.1"
+version: '3.1'
 
 services:
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
+    db:
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+        ports:
+            - '5432:5432'
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - app-network
+
+    nestjs-app:
+        build: .
+        environment:
+            - PORT=3000
+            - DB_USERNAME=postgres
+            - DB_PASSWORD=postgres
+            - DB_DATABASE=postgres
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_LOGGING=false
+        ports:
+            - '3000:3000'
+        depends_on:
+            - db
+        networks:
+            - app-network
+
+volumes:
+    pgdata:
+
+networks:
+    app-network:
+        driver: bridge

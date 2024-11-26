@@ -1,7 +1,14 @@
-FROM postgres:latest
+# Usando uma imagem base do Node.js
+FROM node:20
 
-ENV POSTGRES_USER=${POSTGRES_USER}
-ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-ENV POSTGRES_DB=${POSTGRES_DB}
+WORKDIR /app
 
-EXPOSE 5432
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:dev"]
