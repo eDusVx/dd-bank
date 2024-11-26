@@ -122,6 +122,9 @@ export class Conta {
             this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
             movimentacao.validarDeposito(this.numeroConta)
+            const novoSaldo = this.saldo + movimentacao.getValor()
+
+            this.setSaldo(novoSaldo)
 
             this.movimentacaoFinanceira.push(movimentacao)
         } catch (e) {

@@ -29,6 +29,10 @@ export class ContaBancariaModel extends Model {
         type: DataType.DECIMAL,
         defaultValue: 0,
         field: 'saldo',
+        get() {
+            const value = this.getDataValue('saldo')
+            return parseFloat(value)
+        },
     })
     saldo: number
 

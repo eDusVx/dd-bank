@@ -4,7 +4,7 @@ import { TIPO_MOVIMENTACAO } from '../../domain/MovimentacaoFinanceira'
 
 @Table({
     tableName: 'movimentacao_financeira',
-    timestamps: true, 
+    timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
 })
@@ -45,6 +45,10 @@ export class MovimentacaoFinanceiraModel extends Model {
         type: DataType.DECIMAL,
         field: 'valor',
         allowNull: false,
+        get() {
+            const value = this.getDataValue('valor')
+            return parseFloat(value)
+        },
     })
     valor: number
 
