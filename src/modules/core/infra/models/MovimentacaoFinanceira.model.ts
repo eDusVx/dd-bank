@@ -20,19 +20,17 @@ export class MovimentacaoFinanceiraModel extends Model {
 
     @ForeignKey(() => ContaBancariaModel)
     @Column({
-        type: DataType.STRING,
-        field: 'conta_origem_id',
-        allowNull: false,
+        field: 'numero_conta_origem',
+        allowNull: true,
     })
-    contaOrigemId: string
+    contaOrigemId: number
 
     @ForeignKey(() => ContaBancariaModel)
     @Column({
-        type: DataType.STRING,
-        field: 'conta_destino_id',
-        allowNull: false,
+        field: 'numero_conta_destino',
+        allowNull: true,
     })
-    contaDestinoId: string
+    contaDestinoId: number
 
     @Column({
         type: DataType.ENUM(...Object.values(TIPO_MOVIMENTACAO)),
@@ -59,6 +57,9 @@ export class MovimentacaoFinanceiraModel extends Model {
     })
     dataHora: Date
 
-    @BelongsTo(() => ContaBancariaModel, 'conta_origem_id')
+    @BelongsTo(() => ContaBancariaModel, { foreignKey: 'contaOrigemId' })
     contaOrigem: ContaBancariaModel
+
+    @BelongsTo(() => ContaBancariaModel, { foreignKey: 'contaDestinoId' })
+    contaDestino: ContaBancariaModel
 }

@@ -22,6 +22,7 @@ export class ContaBancariaModel extends Model {
     @ForeignKey(() => ClienteModel)
     @Column({
         field: 'cliente_id',
+        allowNull: false,
     })
     clienteId: string
 
@@ -33,6 +34,7 @@ export class ContaBancariaModel extends Model {
             const value = this.getDataValue('saldo')
             return parseFloat(value)
         },
+        allowNull: false,
     })
     saldo: number
 
@@ -46,6 +48,6 @@ export class ContaBancariaModel extends Model {
     @BelongsTo(() => ClienteModel)
     cliente: ClienteModel
 
-    @HasMany(() => MovimentacaoFinanceiraModel, 'conta_origem_id')
+    @HasMany(() => MovimentacaoFinanceiraModel)
     movimentacoes: MovimentacaoFinanceiraModel[]
 }
