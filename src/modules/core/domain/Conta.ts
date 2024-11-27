@@ -1,4 +1,6 @@
 import { CarregarContaDto, ContaDto, CriarContaDto } from './dto/Conta.dto'
+import { ParametrosInvalidosException } from './exceptions/ParametrosInvalidos.exception'
+import { SaldoInsuficienteException } from './exceptions/SaldoInsuficiente.exception'
 import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
 import { MovimentacaoFinanceira, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
 
@@ -121,8 +123,58 @@ export class Conta {
         try {
             this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
-            movimentacao.validarDeposito(this.numeroConta)
+            movimentacao.validarValorMovimentacao()
             const novoSaldo = this.saldo + movimentacao.getValor()
+
+            this.setSaldo(novoSaldo)
+
+            this.movimentacaoFinanceira.push(movimentacao)
+        } catch (e) {
+            throw e
+        }
+    }
+
+    public efetuarSaque(movimentacao: MovimentacaoFinanceira): void {
+        try {
+            this.validarStatusConta(movimentacao.getTipoMovimentacao())
+
+            movimentacao.validarValorMovimentacao()
+
+            if (this.saldo < movimentacao.getValor()) {
+                throw new SaldoInsuficienteException(
+                    `Saldo insuficiente para a transação ${movimentacao.getTipoMovimentacao()}`,
+                )
+            }
+
+            const novoSaldo = this.saldo - movimentacao.getValor()
+
+            this.setSaldo(novoSaldo)
+
+            this.movimentacaoFinanceira.push(movimentacao)
+        } catch (e) {
+            throw e
+        }
+    }
+
+    public efetuarTransferencia(movimentacao: MovimentacaoFinanceira): void {
+        try {
+            let novoSaldo: number
+            this.validarStatusConta(movimentacao.getTipoMovimentacao())
+
+            movimentacao.validarValorMovimentacao()
+
+            if (this.numeroConta == movimentacao.getNumeroContaOrigem()) {
+                if (this.saldo < movimentacao.getValor()) {
+                    throw new SaldoInsuficienteException(
+                        `Saldo insuficiente para a transação ${movimentacao.getTipoMovimentacao()}`,
+                    )
+                }
+                novoSaldo = this.saldo - movimentacao.getValor()
+            } else if (this.numeroConta == movimentacao.getNumeroContaDestino()) {
+                novoSaldo = this.saldo + movimentacao.getValor()
+            } else {
+                throw new ParametrosInvalidosException('A conta não está associada à transferencia atual')
+            }
 
             this.setSaldo(novoSaldo)
 

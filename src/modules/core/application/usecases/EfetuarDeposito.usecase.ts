@@ -1,26 +1,23 @@
 import { Inject } from '@nestjs/common'
-import { ParametrosInvalidosException } from '../../domain/exceptions/ParametrosInvalidos.exception'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
 import { ContaNaoEcontradaException } from '../../domain/exceptions/ContaNaoEcontrada.exception'
 import { MovimentacaoFinanceira, TIPO_MOVIMENTACAO } from '../../domain/MovimentacaoFinanceira'
-import { EfeturarDepositoDto } from '../../domain/dto/MovimentacaoFinanceira.dto'
+import { EfeturarDepositoDto, MovimentacaoFinanceiraDto } from '../../domain/dto/MovimentacaoFinanceira.dto'
 
 export class EfetuarDepositoUseCase {
     constructor(
         @Inject('ContaRepository')
         private readonly contaRepository: ContaRepository,
     ) {}
-    async execute(request: EfeturarDepositoDto): Promise<any> {
+    async execute(request: EfeturarDepositoDto): Promise<MovimentacaoFinanceiraDto> {
         try {
-            if (!request) throw new ParametrosInvalidosException('Parâmetros não informados')
-
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
             if (!conta) throw new ContaNaoEcontradaException('Nenhuma conta encontrada')
 
             const deposito = MovimentacaoFinanceira.criar({
                 valor: request.valor,
                 data: new Date(),
-                tipoMovimentacao: TIPO_MOVIMENTACAO[request.tipoMovimentacao],
+                tipoMovimentacao: TIPO_MOVIMENTACAO.DEPOSITO,
                 numeroContaDestino: request.numeroContaDestino,
             })
 
@@ -28,7 +25,7 @@ export class EfetuarDepositoUseCase {
 
             await this.contaRepository.salvarConta(conta)
 
-            return conta.getMovimentacaoFinanceira().map((movimentacao) => movimentacao.toDTO())
+            return deposito.toDTO()
         } catch (e) {
             throw e
         }

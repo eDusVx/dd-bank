@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { CriarMovimentacaoFinanceiraDto, MovimentacaoFinanceiraDto } from './dto/MovimentacaoFinanceira.dto'
 import { DepositoMenorIgualZeroException } from './exceptions/DepositoMenorIgualZero.exception'
-import { ContaDestinoDiferenteException } from './exceptions/ContaDestinoDiferente.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',
@@ -128,11 +127,8 @@ export class MovimentacaoFinanceira {
         }
     }
 
-    public validarDeposito(numeroConta: number): boolean {
+    public validarValorMovimentacao(): boolean {
         try {
-            if (this.numeroContaDestino != numeroConta) {
-                throw new ContaDestinoDiferenteException('A conta de origem é diferente da conta em uso.')
-            }
             if (this.valor <= 0) {
                 throw new DepositoMenorIgualZeroException('O depósito deve ser um valor maior que 0')
             }

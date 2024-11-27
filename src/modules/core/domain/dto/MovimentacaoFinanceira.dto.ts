@@ -46,6 +46,16 @@ export class MovimentacaoFinanceiraDto {
 
 export class EfeturarDepositoDto {
     valor: number
-    tipoMovimentacao: TIPO_MOVIMENTACAO
+    numeroContaDestino: number
+}
+
+export class EfeturarSaqueDto {
+    valor: number
+    numeroContaOrigem: number
+}
+
+export class EfeturarTransferenciaDto {
+    valor: number
+    numeroContaOrigem: number
     numeroContaDestino: number
 }
