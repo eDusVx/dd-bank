@@ -1,6 +1,6 @@
 import { Conta } from '../Conta'
 
-export interface BuscarProximIdQueryResponse {
+export interface BuscarProximoIdQueryResponse {
     nextid: number
 }
 

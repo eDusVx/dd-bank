@@ -1,29 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { ContaBancariaModel } from '../models/Conta.model'
-import { BuscarProximIdQueryResponse, ContaRepository } from '../../domain/repositories/Conta.repository'
+import { BuscarProximoIdQueryResponse, ContaRepository } from '../../domain/repositories/Conta.repository'
 import { Conta } from '../../domain/Conta'
 import { ContaMapper } from '../mappers/Conta.mapper'
 import { ContaNaoEncontradaException } from '../../domain/exceptions/ContaNaoEncontrada.exception'
-import { MovimentacaoFinanceiraModel } from '../models/MovimentacaoFinanceira.model'
 
 @Injectable()
 export class ContaRepositoryImpl implements ContaRepository {
     constructor(
         @Inject('ContaModel')
         private readonly contaModel: typeof ContaBancariaModel,
-        @Inject('MovimentacoesModel')
-        private readonly movimentacoesModel: typeof MovimentacaoFinanceiraModel,
         private readonly contaMapper: ContaMapper,
     ) {}
     async buscarTodos(): Promise<Conta[]> {
         try {
-            const buscarConta = await this.contaModel.findAll<ContaBancariaModel>({
-                include: [
-                    {
-                        model: MovimentacaoFinanceiraModel,
-                    },
-                ],
-            })
+            const buscarConta = await this.contaModel.findAll()
 
             if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
 
@@ -39,11 +30,6 @@ export class ContaRepositoryImpl implements ContaRepository {
                 where: {
                     numeroConta: numeroConta,
                 },
-                include: [
-                    {
-                        model: MovimentacaoFinanceiraModel,
-                    },
-                ],
             })
 
             if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
@@ -60,10 +46,6 @@ export class ContaRepositoryImpl implements ContaRepository {
         try {
             const contaModelResult = this.contaMapper.domainToModel(conta)
 
-            for (const movimentacoes of contaModelResult.movimentacoes) {
-                await this.movimentacoesModel.upsert(movimentacoes.toJSON())
-            }
-
             await this.contaModel.upsert(contaModelResult.toJSON())
         } catch (e) {
             throw e
@@ -74,9 +56,6 @@ export class ContaRepositoryImpl implements ContaRepository {
         try {
             const contasModel = this.contaMapper.domainToModelList(contas)
             for (const conta of contasModel) {
-                for (const movimentacoes of conta.movimentacoes) {
-                    await this.movimentacoesModel.upsert(movimentacoes.toJSON())
-                }
                 await this.contaModel.upsert(conta.toJSON())
             }
         } catch (e) {
@@ -86,9 +65,9 @@ export class ContaRepositoryImpl implements ContaRepository {
 
     async buscarProximoId(): Promise<number> {
         try {
-            const [result]: [BuscarProximIdQueryResponse[]] = await this.contaModel.sequelize.query<
-                [BuscarProximIdQueryResponse[]]
-            >(`SELECT nextval('conta_bancaria_numero_conta_seq') as nextid`, null)
+            const [result]: [BuscarProximoIdQueryResponse[]] = await this.contaModel.sequelize.query<
+                [BuscarProximoIdQueryResponse[]]
+            >(`SELECT CAST(nextval('conta_bancaria_numero_conta_seq') AS INTEGER) as nextid`, null)
 
             return result[0].nextid
         } catch (e) {

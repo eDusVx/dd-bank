@@ -64,18 +64,13 @@ export class ContaMapper {
             )
         }
 
-        const model = ContaBancariaModel.build(
-            {
-                numeroConta: domain.getNumeroConta(),
-                saldo: domain.getSaldo(),
-                status: domain.getStatus(),
-                clienteId: domain.getClienteId(),
-                movimentacoes: movimentacoesFinanceirasModel,
-            },
-            {
-                include: [MovimentacaoFinanceiraModel],
-            },
-        )
+        const model = ContaBancariaModel.build({
+            numeroConta: domain.getNumeroConta(),
+            saldo: domain.getSaldo(),
+            status: domain.getStatus(),
+            clienteId: domain.getClienteId(),
+            movimentacoes: movimentacoesFinanceirasModel,
+        })
 
         return model
     }
@@ -89,18 +84,13 @@ export class ContaMapper {
                     conta.getMovimentacaoFinanceira(),
                 )
             }
-            const contaModel = new ContaBancariaModel(
-                {
-                    numeroConta: conta.getNumeroConta(),
-                    saldo: conta.getSaldo(),
-                    status: conta.getStatus(),
-                    clienteId: conta.getClienteId(),
-                    movimentacoes: movimentacoesFinanceirasModel,
-                },
-                {
-                    include: [MovimentacaoFinanceiraModel],
-                },
-            )
+            const contaModel = new ContaBancariaModel({
+                numeroConta: conta.getNumeroConta(),
+                saldo: conta.getSaldo(),
+                status: conta.getStatus(),
+                clienteId: conta.getClienteId(),
+                movimentacoes: movimentacoesFinanceirasModel,
+            })
             models.push(contaModel)
         }
 

@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, PrimaryKey, Table, HasMany, BelongsTo } from 'sequelize-typescript'
+import { Column, DataType, ForeignKey, Model, PrimaryKey, Table, BelongsTo } from 'sequelize-typescript'
 import { ClienteModel } from './Cliente.model'
 import { STATUS_CONTA } from '../../domain/Conta'
 import { MovimentacaoFinanceiraModel } from './MovimentacaoFinanceira.model'
@@ -45,9 +45,13 @@ export class ContaBancariaModel extends Model {
     })
     status: STATUS_CONTA
 
+    @Column({
+        type: DataType.JSONB,
+        allowNull: false,
+        field: 'json_movimentacoes',
+    })
+    movimentacoes: MovimentacaoFinanceiraModel[]
+
     @BelongsTo(() => ClienteModel)
     cliente: ClienteModel
-
-    @HasMany(() => MovimentacaoFinanceiraModel)
-    movimentacoes: MovimentacaoFinanceiraModel[]
 }

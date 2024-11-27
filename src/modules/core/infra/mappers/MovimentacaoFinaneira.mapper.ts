@@ -13,7 +13,7 @@ export class MovimentacaoFinanceiraMapper {
                 const domain = MovimentacaoFinanceira.carregar(
                     {
                         valor: movimentacaoFinanceira.valor,
-                        data: movimentacaoFinanceira.dataHora,
+                        data: new Date(movimentacaoFinanceira.dataHora),
                         tipoMovimentacao: movimentacaoFinanceira.tipo,
                         numeroContaDestino: movimentacaoFinanceira.contaDestinoId,
                         numeroContaOrigem: movimentacaoFinanceira.contaOrigemId,
@@ -31,7 +31,8 @@ export class MovimentacaoFinanceiraMapper {
     public domainToModelList(domain: MovimentacaoFinanceira[]): MovimentacaoFinanceiraModel[] {
         const models: MovimentacaoFinanceiraModel[] = []
         for (const movimentacaoFinanceira of domain) {
-            const movimentacao = MovimentacaoFinanceiraModel.build({
+            const movimentacao = new MovimentacaoFinanceiraModel()
+            movimentacao.setProps({
                 id: movimentacaoFinanceira.getId(),
                 contaOrigemId: movimentacaoFinanceira.getNumeroContaOrigem(),
                 contaDestinoId: movimentacaoFinanceira.getNumeroContaDestino(),
