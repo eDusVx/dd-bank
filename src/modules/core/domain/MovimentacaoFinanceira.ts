@@ -1,11 +1,35 @@
 import { v4 as uuidv4 } from 'uuid'
-import { CriarMovimentacaoFinanceiraDto, MovimentacaoFinanceiraDto } from './dto/MovimentacaoFinanceira.dto'
 import { DepositoMenorIgualZeroException } from './exceptions/DepositoMenorIgualZero.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',
     DEPOSITO = 'DEPOSITO',
     SAQUE = 'SAQUE',
+}
+
+export interface MovimentacaoFinanceiraDto {
+    id: string
+    valor: number
+    data: Date
+    tipoMovimentacao: TIPO_MOVIMENTACAO
+    numeroContaOrigem: number
+    numeroContaDestino?: number
+}
+
+export interface CriarMovimentacaoFinanceiraProps {
+    valor: number
+    data: Date
+    tipoMovimentacao: TIPO_MOVIMENTACAO
+    numeroContaOrigem?: number
+    numeroContaDestino?: number
+}
+
+export interface CarregarMovimentacaoFinanceirarops {
+    valor: number
+    data: Date
+    tipoMovimentacao: TIPO_MOVIMENTACAO
+    numeroContaOrigem?: number
+    numeroContaDestino?: number
 }
 
 export class MovimentacaoFinanceira {
@@ -20,7 +44,7 @@ export class MovimentacaoFinanceira {
         this.id = id
     }
 
-    public static criar(props: CriarMovimentacaoFinanceiraDto): MovimentacaoFinanceira {
+    public static criar(props: CriarMovimentacaoFinanceiraProps): MovimentacaoFinanceira {
         const id = uuidv4()
 
         const instance = new MovimentacaoFinanceira(id)
@@ -37,7 +61,7 @@ export class MovimentacaoFinanceira {
         return instance
     }
 
-    public static carregar(props: CriarMovimentacaoFinanceiraDto, id: string): MovimentacaoFinanceira {
+    public static carregar(props: CarregarMovimentacaoFinanceirarops, id: string): MovimentacaoFinanceira {
         const instance = new MovimentacaoFinanceira(id)
         try {
             instance.setValor(props.valor)

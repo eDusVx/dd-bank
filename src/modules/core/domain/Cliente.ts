@@ -1,4 +1,22 @@
-import { ClienteDto, CriarClienteDto } from './dto/Cliente.dto'
+export interface ClienteDto {
+    cpf: string
+    nome: string
+    dataNascimento: Date
+    contas: number[]
+}
+
+export interface CriarClienteProps {
+    cpf: string
+    nome: string
+    dataNascimento: Date
+}
+
+export interface CarregarClienteProps {
+    cpf: string
+    nome: string
+    dataNascimento: Date
+    contas: number[]
+}
 
 export class Cliente {
     private cpf: string
@@ -10,7 +28,7 @@ export class Cliente {
         this.cpf = cpf
     }
 
-    public static criar(props: CriarClienteDto): Cliente {
+    public static criar(props: CriarClienteProps): Cliente {
         const instance = new Cliente(props.cpf)
         try {
             instance.setNome(props.nome)
@@ -24,7 +42,7 @@ export class Cliente {
         return instance
     }
 
-    public static carregar(props: CriarClienteDto): Cliente {
+    public static carregar(props: CarregarClienteProps): Cliente {
         const instance = new Cliente(props.cpf)
         try {
             instance.setNome(props.nome)

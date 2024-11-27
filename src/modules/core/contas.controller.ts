@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common'
-import { AtualizarStatusContaDto, ContaDto, CriarContaDto } from './domain/dto/Conta.dto'
+import { AtualizarStatusContaDto, CriarContaRequestDto } from './application/dto/Conta.dto'
 import { CriarContaUseCase } from './application/usecases/CriarConta.usecase'
 import { AtualizarStatusContaUseCase } from './application/usecases/AualizarStatusConta.usecase'
 import { BuscarContasQuery } from './application/queries/BuscarContas.query'
+import { ContaDto } from './domain/Conta'
 
 @Controller('contas')
 export class ContasController {
@@ -13,7 +14,7 @@ export class ContasController {
     ) {}
 
     @Post('')
-    async criarConta(@Body() request: CriarContaDto): Promise<ContaDto> {
+    async criarConta(@Body() request: CriarContaRequestDto): Promise<ContaDto> {
         try {
             const response = await this.criarContaUseCase.execute(request)
 

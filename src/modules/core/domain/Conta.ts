@@ -1,12 +1,30 @@
-import { CarregarContaDto, ContaDto, CriarContaDto } from './dto/Conta.dto'
-import { ParametrosInvalidosException } from './exceptions/ParametrosInvalidos.exception'
 import { SaldoInsuficienteException } from './exceptions/SaldoInsuficiente.exception'
 import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
-import { MovimentacaoFinanceira, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
+import { MovimentacaoFinanceira, MovimentacaoFinanceiraDto, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
 
 export enum STATUS_CONTA {
     ATIVA = 'ATIVA',
     INATIVA = 'INATIVA',
+}
+
+export interface CriarContaProps {
+    clienteId: string
+    numeroConta: number
+}
+
+export interface CarregarContaProps {
+    clienteId: string
+    saldo: number
+    status: STATUS_CONTA
+    movimentacaoFinanceira: MovimentacaoFinanceira[]
+}
+
+export interface ContaDto {
+    clienteId: string
+    numeroConta: number
+    saldo: number
+    status: STATUS_CONTA
+    movimentacaoFinanceira: MovimentacaoFinanceiraDto[]
 }
 
 export class Conta {
@@ -20,7 +38,7 @@ export class Conta {
         this.numeroConta = numeroConta
     }
 
-    public static criar(props: CriarContaDto): Conta {
+    public static criar(props: CriarContaProps): Conta {
         const instance = new Conta(props.numeroConta)
         try {
             instance.setSaldo(0)
@@ -33,7 +51,7 @@ export class Conta {
         return instance
     }
 
-    public static carregar(props: CarregarContaDto, numeroConta: number): Conta {
+    public static carregar(props: CarregarContaProps, numeroConta: number): Conta {
         const instance = new Conta(numeroConta)
         try {
             instance.setSaldo(props.saldo)
@@ -173,7 +191,7 @@ export class Conta {
             } else if (this.numeroConta == movimentacao.getNumeroContaDestino()) {
                 novoSaldo = this.saldo + movimentacao.getValor()
             } else {
-                throw new ParametrosInvalidosException('A conta não está associada à transferencia atual')
+                throw new SaldoInsuficienteException('A conta não está associada à transferencia atual')
             }
 
             this.setSaldo(novoSaldo)

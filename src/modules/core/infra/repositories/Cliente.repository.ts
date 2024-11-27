@@ -16,7 +16,14 @@ export class ClienteRepositoryImpl implements ClienteRepository {
     ) {}
     async buscarTodos(): Promise<Cliente[]> {
         try {
-            const buscarCliente = await this.clienteModel.findAll<ClienteModel>()
+            const buscarCliente = await this.clienteModel.findAll<ClienteModel>({
+                include: [
+                    {
+                        model: ContaBancariaModel,
+                        attributes: ['numeroConta'],
+                    },
+                ],
+            })
 
             if (!buscarCliente) throw new ClienteNaoEcontradoException(`Nenhum cliente foi encontrado`)
 

@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
-import { ContaDto } from '../../domain/dto/Conta.dto'
+import { ContaDto } from '../../domain/Conta'
 
 export class BuscarContasQuery {
     constructor(

@@ -1,18 +1,15 @@
 import { Inject } from '@nestjs/common'
-import { ContaDto, CriarContaDto } from '../../domain/dto/Conta.dto'
-import { ParametrosInvalidosException } from '../../domain/exceptions/ParametrosInvalidos.exception'
-import { Conta } from '../../domain/Conta'
+import { Conta, ContaDto } from '../../domain/Conta'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
+import { CriarContaRequestDto } from '../dto/Conta.dto'
 
 export class CriarContaUseCase {
     constructor(
         @Inject('ContaRepository')
         private readonly contaRepository: ContaRepository,
     ) {}
-    async execute(request: CriarContaDto): Promise<ContaDto> {
+    async execute(request: CriarContaRequestDto): Promise<ContaDto> {
         try {
-            if (!request) throw new ParametrosInvalidosException('Parâmetros não informados')
-
             const idConta = await this.contaRepository.buscarProximoId()
 
             const conta = Conta.criar({

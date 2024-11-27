@@ -1,18 +1,15 @@
 import { Inject } from '@nestjs/common'
-import { ClienteDto, CriarClienteDto } from '../../domain/dto/Cliente.dto'
-import { Cliente } from '../../domain/Cliente'
+import { Cliente, ClienteDto } from '../../domain/Cliente'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
-import { ParametrosInvalidosException } from '../../domain/exceptions/ParametrosInvalidos.exception'
+import { CadastrarClienteRequestDto } from '../dto/Cliente.dto'
 
-export class CriarClienteUseCase {
+export class CadastrarClienteUseCase {
     constructor(
         @Inject('ClienteRepository')
         private readonly clienteRepository: ClienteRepository,
     ) {}
-    async execute(request: CriarClienteDto): Promise<ClienteDto> {
+    async execute(request: CadastrarClienteRequestDto): Promise<ClienteDto> {
         try {
-            if (!request) throw new ParametrosInvalidosException('Parâmetros não informados')
-
             const cliente = Cliente.criar({
                 nome: request.nome,
                 cpf: request.cpf,

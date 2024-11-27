@@ -1,17 +1,18 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
-import { ClienteDto, CriarClienteDto } from './domain/dto/Cliente.dto'
-import { CriarClienteUseCase } from './application/usecases/CriarCliente.usecase'
+import { CadastrarClienteUseCase } from './application/usecases/CadastrarCliente.usecase'
 import { BuscarClientesQuery } from './application/queries/BuscarClientes.query'
+import { CadastrarClienteRequestDto } from './application/dto/Cliente.dto'
+import { ClienteDto } from './domain/Cliente'
 
 @Controller('clientes')
 export class ClientesController {
     constructor(
-        private readonly cadastrarClienteUseCase: CriarClienteUseCase,
+        private readonly cadastrarClienteUseCase: CadastrarClienteUseCase,
         private readonly buscarClientesQuery: BuscarClientesQuery,
     ) {}
 
     @Post('')
-    async cadastrarCliente(@Body() request: CriarClienteDto): Promise<ClienteDto> {
+    async cadastrarCliente(@Body() request: CadastrarClienteRequestDto): Promise<ClienteDto> {
         try {
             const response = await this.cadastrarClienteUseCase.execute(request)
 
