@@ -1,4 +1,4 @@
-import { isArray, isEmpty, isNumber, isString, matches } from 'class-validator'
+import { isArray, isDate, isEmpty, isNumber, isString, matches, maxDate } from 'class-validator'
 import { isLength } from 'validator'
 import { ClienteException } from './exceptions/Cliente.exception'
 
@@ -85,6 +85,12 @@ export class Cliente {
 
     private setDataNascimento(dataNascimento: Date) {
         try {
+            if (isEmpty(dataNascimento)) throw new ClienteException('A data de nascimento do cliente não pode ser nula')
+            if (!isDate(dataNascimento))
+                throw new ClienteException('A data de nascimento do cliente tem que ser do tipo Data')
+            if (maxDate(new Date(), dataNascimento))
+                throw new ClienteException('A data de nascimento deve ser anterior à data atual.')
+
             this.dataNascimento = dataNascimento
         } catch (e) {
             throw e

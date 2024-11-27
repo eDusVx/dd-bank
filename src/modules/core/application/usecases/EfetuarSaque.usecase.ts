@@ -6,14 +6,14 @@ import {
     MovimentacaoFinanceiraDto,
     TIPO_MOVIMENTACAO,
 } from '../../domain/MovimentacaoFinanceira'
-import { EfeturarSaqueRequestDto } from '../requests/MovimentacaoFinanceira.request'
+import { EfeturarSaqueRequest } from '../requests/MovimentacaoFinanceira.request'
 
 export class EfetuarSaqueUseCase {
     constructor(
         @Inject('ContaRepository')
         private readonly contaRepository: ContaRepository,
     ) {}
-    async execute(request: EfeturarSaqueRequestDto): Promise<MovimentacaoFinanceiraDto> {
+    async execute(request: EfeturarSaqueRequest): Promise<MovimentacaoFinanceiraDto> {
         try {
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
             // if (!conta) throw new ContaNaoEcontradaException('Nenhuma conta encontrada')

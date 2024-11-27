@@ -1,14 +1,14 @@
 import { Inject } from '@nestjs/common'
 import { Cliente, ClienteDto } from '../../domain/Cliente'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
-import { CadastrarClienteRequestDto } from '../requests/Cliente.request'
+import { CadastrarClienteRequest } from '../requests/Cliente.request'
 
 export class CadastrarClienteUseCase {
     constructor(
         @Inject('ClienteRepository')
         private readonly clienteRepository: ClienteRepository,
     ) {}
-    async execute(request: CadastrarClienteRequestDto): Promise<ClienteDto> {
+    async execute(request: CadastrarClienteRequest): Promise<ClienteDto> {
         try {
             const cliente = Cliente.criar({
                 nome: request.nome,

@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { DepositoMenorIgualZeroException } from './exceptions/DepositoMenorIgualZero.exception'
+import { isEmpty, isNumber, isPositive, maxDate, isDate, isString, isEnum, min } from 'class-validator'
+import { MovimentacaoFinanceiraException } from './exceptions/MovimentacaoFinanceitra.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',
@@ -78,6 +80,9 @@ export class MovimentacaoFinanceira {
 
     private setValor(valor: number) {
         try {
+            if (isEmpty(valor)) throw new MovimentacaoFinanceiraException('O valor não pode ser nulo')
+            if (!isNumber(valor)) throw new MovimentacaoFinanceiraException('O valor deve ser do tipo number')
+            if (isPositive(valor)) throw new MovimentacaoFinanceiraException('O valor deve ser maior que 0')
             this.valor = valor
         } catch (e) {
             throw e
@@ -86,6 +91,11 @@ export class MovimentacaoFinanceira {
 
     private setData(data: Date) {
         try {
+            if (isEmpty(data)) throw new MovimentacaoFinanceiraException('A data da movimentação não pode ser nula')
+            if (!isDate(data))
+                throw new MovimentacaoFinanceiraException('A data da movimentaçãoo do cliente tem que ser do tipo Data')
+            if (maxDate(new Date(), data))
+                throw new MovimentacaoFinanceiraException('A data da movimentação deve ser anterior à data atual.')
             this.data = data
         } catch (e) {
             throw e
@@ -94,6 +104,15 @@ export class MovimentacaoFinanceira {
 
     private setTipoMovimentacao(tipoMovimentacao: TIPO_MOVIMENTACAO) {
         try {
+            if (isEmpty(tipoMovimentacao))
+                throw new MovimentacaoFinanceiraException('O tipo da movimentação não pode ser nulo')
+            if (!isString(tipoMovimentacao))
+                throw new MovimentacaoFinanceiraException('O tipo da movimentação deve ser do tipo string')
+            if (!isEnum(tipoMovimentacao, TIPO_MOVIMENTACAO)) {
+                throw new MovimentacaoFinanceiraException(
+                    `Tipo da movimentação inválido, deve ser [${Object.values(TIPO_MOVIMENTACAO)}]`,
+                )
+            }
             this.tipoMovimentacao = tipoMovimentacao
         } catch (e) {
             throw e
@@ -102,6 +121,14 @@ export class MovimentacaoFinanceira {
 
     private setNumeroContaOrigem(numeroContaOrigem: number) {
         try {
+            if (isEmpty(numeroContaOrigem))
+                throw new MovimentacaoFinanceiraException('O numero da conta de origem não pode ser nulo')
+            if (!min(1, numeroContaOrigem))
+                throw new MovimentacaoFinanceiraException(
+                    'O numero da conta de origem tem que comecar maior ou igual a 1',
+                )
+            if (!isNumber(numeroContaOrigem))
+                throw new MovimentacaoFinanceiraException('O numero da conta de origem tem que ser do tipo number')
             this.numeroContaOrigem = numeroContaOrigem
         } catch (e) {
             throw e
@@ -110,6 +137,14 @@ export class MovimentacaoFinanceira {
 
     private setNumeroContaDestino(numeroContaDestino: number) {
         try {
+            if (isEmpty(numeroContaDestino))
+                throw new MovimentacaoFinanceiraException('O numero da conta de destino não pode ser nulo')
+            if (!min(1, numeroContaDestino))
+                throw new MovimentacaoFinanceiraException(
+                    'O numero da conta de destino tem que comecar maior ou igual a 1',
+                )
+            if (!isNumber(numeroContaDestino))
+                throw new MovimentacaoFinanceiraException('O numero da conta de destino tem que ser do tipo number')
             this.numeroContaDestino = numeroContaDestino
         } catch (e) {
             throw e

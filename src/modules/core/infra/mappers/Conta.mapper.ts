@@ -23,6 +23,7 @@ export class ContaMapper {
                 },
                 model.numeroConta,
             )
+
             return contaDomain
         } catch (e) {
             throw e

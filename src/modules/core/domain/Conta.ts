@@ -46,7 +46,7 @@ export class Conta {
         try {
             instance.setSaldo(0)
             instance.setStatus(STATUS_CONTA.ATIVA)
-            instance.setClienteId('00000000001' as any)
+            instance.setClienteId(props.clienteId)
         } catch (e) {
             throw e
         }
@@ -73,6 +73,7 @@ export class Conta {
             if (isEmpty(saldo)) throw new ContaException('O saldo não pode ser nulo')
             if (!isNumber(saldo)) throw new ContaException('O saldo deve ser do tipo number')
             if (isNegative(saldo)) throw new ContaException('O saldo não pode ser negativo')
+            this.saldo = saldo
         } catch (e) {
             throw e
         }

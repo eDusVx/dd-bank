@@ -6,14 +6,14 @@ import {
     MovimentacaoFinanceiraDto,
     TIPO_MOVIMENTACAO,
 } from '../../domain/MovimentacaoFinanceira'
-import { EfeturarTransferenciaRequestDto } from '../requests/MovimentacaoFinanceira.request'
+import { EfeturarTransferenciaRequest } from '../requests/MovimentacaoFinanceira.request'
 
 export class EfetuarTransferenciaUseCase {
     constructor(
         @Inject('ContaRepository')
         private readonly contaRepository: ContaRepository,
     ) {}
-    async execute(request: EfeturarTransferenciaRequestDto): Promise<MovimentacaoFinanceiraDto> {
+    async execute(request: EfeturarTransferenciaRequest): Promise<MovimentacaoFinanceiraDto> {
         try {
             const contaOrigemSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
             // if (!contaOrigemSaque) {
