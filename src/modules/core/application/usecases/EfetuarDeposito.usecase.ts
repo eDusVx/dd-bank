@@ -16,7 +16,6 @@ export class EfetuarDepositoUseCase {
     async execute(request: EfeturarDepositoRequest): Promise<MovimentacaoFinanceiraDto> {
         try {
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
-            // if (!conta) throw new ContaNaoEcontradaException('Nenhuma conta encontrada')
 
             const deposito = MovimentacaoFinanceira.criar({
                 valor: request.valor,

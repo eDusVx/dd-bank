@@ -88,7 +88,7 @@ export class Cliente {
             if (isEmpty(dataNascimento)) throw new ClienteException('A data de nascimento do cliente não pode ser nula')
             if (!isDate(dataNascimento))
                 throw new ClienteException('A data de nascimento do cliente tem que ser do tipo Data')
-            if (maxDate(new Date(), dataNascimento))
+            if (!maxDate(dataNascimento, new Date()))
                 throw new ClienteException('A data de nascimento deve ser anterior à data atual.')
 
             this.dataNascimento = dataNascimento

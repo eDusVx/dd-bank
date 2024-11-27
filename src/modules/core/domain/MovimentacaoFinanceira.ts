@@ -82,7 +82,7 @@ export class MovimentacaoFinanceira {
         try {
             if (isEmpty(valor)) throw new MovimentacaoFinanceiraException('O valor não pode ser nulo')
             if (!isNumber(valor)) throw new MovimentacaoFinanceiraException('O valor deve ser do tipo number')
-            if (isPositive(valor)) throw new MovimentacaoFinanceiraException('O valor deve ser maior que 0')
+            if (!isPositive(valor)) throw new MovimentacaoFinanceiraException('O valor deve ser maior que 0')
             this.valor = valor
         } catch (e) {
             throw e
@@ -94,7 +94,7 @@ export class MovimentacaoFinanceira {
             if (isEmpty(data)) throw new MovimentacaoFinanceiraException('A data da movimentação não pode ser nula')
             if (!isDate(data))
                 throw new MovimentacaoFinanceiraException('A data da movimentaçãoo do cliente tem que ser do tipo Data')
-            if (maxDate(new Date(), data))
+            if (!maxDate(data, new Date()))
                 throw new MovimentacaoFinanceiraException('A data da movimentação deve ser anterior à data atual.')
             this.data = data
         } catch (e) {
@@ -119,32 +119,32 @@ export class MovimentacaoFinanceira {
         }
     }
 
-    private setNumeroContaOrigem(numeroContaOrigem: number) {
+    private setNumeroContaOrigem(numeroContaOrigem?: number) {
         try {
-            if (isEmpty(numeroContaOrigem))
-                throw new MovimentacaoFinanceiraException('O numero da conta de origem não pode ser nulo')
-            if (!min(1, numeroContaOrigem))
-                throw new MovimentacaoFinanceiraException(
-                    'O numero da conta de origem tem que comecar maior ou igual a 1',
-                )
-            if (!isNumber(numeroContaOrigem))
-                throw new MovimentacaoFinanceiraException('O numero da conta de origem tem que ser do tipo number')
+            if (numeroContaOrigem) {
+                if (!min(numeroContaOrigem, 1))
+                    throw new MovimentacaoFinanceiraException(
+                        'O numero da conta de origem tem que comecar maior ou igual a 1',
+                    )
+                if (!isNumber(numeroContaOrigem))
+                    throw new MovimentacaoFinanceiraException('O numero da conta de origem tem que ser do tipo number')
+            }
             this.numeroContaOrigem = numeroContaOrigem
         } catch (e) {
             throw e
         }
     }
 
-    private setNumeroContaDestino(numeroContaDestino: number) {
+    private setNumeroContaDestino(numeroContaDestino?: number) {
         try {
-            if (isEmpty(numeroContaDestino))
-                throw new MovimentacaoFinanceiraException('O numero da conta de destino não pode ser nulo')
-            if (!min(1, numeroContaDestino))
-                throw new MovimentacaoFinanceiraException(
-                    'O numero da conta de destino tem que comecar maior ou igual a 1',
-                )
-            if (!isNumber(numeroContaDestino))
-                throw new MovimentacaoFinanceiraException('O numero da conta de destino tem que ser do tipo number')
+            if (numeroContaDestino) {
+                if (!min(numeroContaDestino, 1))
+                    throw new MovimentacaoFinanceiraException(
+                        'O numero da conta de destino tem que comecar maior ou igual a 1',
+                    )
+                if (!isNumber(numeroContaDestino))
+                    throw new MovimentacaoFinanceiraException('O numero da conta de destino tem que ser do tipo number')
+            }
             this.numeroContaDestino = numeroContaDestino
         } catch (e) {
             throw e

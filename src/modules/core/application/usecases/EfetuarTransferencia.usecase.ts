@@ -16,14 +16,8 @@ export class EfetuarTransferenciaUseCase {
     async execute(request: EfeturarTransferenciaRequest): Promise<MovimentacaoFinanceiraDto> {
         try {
             const contaOrigemSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
-            // if (!contaOrigemSaque) {
-            //     throw new ContaNaoEcontradaException('Conta de origem não encontrada')
-            // }
 
             const contaDestinoSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
-            // if (!contaDestinoSaque) {
-            //     throw new ContaNaoEcontradaException('Conta de destino não encontrada')
-            // }
 
             const transferencia = MovimentacaoFinanceira.criar({
                 valor: request.valor,
