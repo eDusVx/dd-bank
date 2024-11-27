@@ -14,10 +14,9 @@ export class LoggerInterceptor implements NestInterceptor {
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest()
-        const controllerName = context.getClass().name
         const handlerName = context.getHandler().name
 
-        const key = `${controllerName}#${handlerName}`
+        const process = `${handlerName}`
         const params: Record<string, any> = {}
 
         if (Object.keys(request.query).length > 0) {
@@ -32,31 +31,31 @@ export class LoggerInterceptor implements NestInterceptor {
 
         const props = JSON.stringify(params)
 
-        this.logger.debug(`Iniciando execução de ${controllerName}.${handlerName} com parâmetros: ${props}`)
+        this.logger.debug(`Iniciando execução de ${handlerName} com parâmetros: ${props}`)
         this.logService.log({
-            key,
-            log: `Handler ${handlerName} started`,
+            process,
+            log: `O processo ${handlerName} foi iniciado com os parâmetros: ${props}`,
             props,
         })
 
         return next.handle().pipe(
             tap((response) => {
                 const result = JSON.stringify(response)
-                this.logger.debug(`${controllerName}.${handlerName} executado com sucesso com parâmetros: ${props}`)
+                this.logger.debug(`${handlerName} executado com sucesso com parâmetros: ${props}`)
                 this.logService.log({
-                    key,
-                    log: `Handler ${handlerName} completed successfully`,
+                    process,
+                    log: `O processo ${handlerName} foi finalizado com sucesso`,
                     props,
                     result,
                 })
             }),
             catchError((error) => {
-                this.logger.error(`${controllerName}.${handlerName} executado com falha: ${error.message}`)
+                this.logger.error(`${handlerName} executado com falha: ${error.message}`)
                 this.logService.error({
-                    key,
-                    log: `Handler ${handlerName} failed`,
+                    process,
+                    log: `O processo ${handlerName} finalizou com o erro ${error.message}`,
                     props,
-                    result: null,
+                    result: JSON.stringify(error.response),
                 })
                 throw error
             }),

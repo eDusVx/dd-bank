@@ -11,7 +11,7 @@ export class LogRepositoryImpl implements LogRepository {
 
     async log(props: LogProps): Promise<void> {
         await this.logModel.create({
-            key: props.key,
+            process: props.process,
             log: JSON.stringify(props.log),
             type: 'log',
             props: props.props,
@@ -21,7 +21,7 @@ export class LogRepositoryImpl implements LogRepository {
 
     async success(props: LogProps): Promise<void> {
         await this.logModel.create({
-            key: props.key,
+            process: props.process,
             log: JSON.stringify(props.log),
             type: 'success',
             props: props.props,
@@ -31,7 +31,7 @@ export class LogRepositoryImpl implements LogRepository {
 
     async error(props: LogProps): Promise<void> {
         await this.logModel.create({
-            key: props.key,
+            process: props.process,
             log: JSON.stringify(props.log),
             type: 'error',
             props: props.props,
@@ -41,7 +41,7 @@ export class LogRepositoryImpl implements LogRepository {
 
     async warning(props: LogProps): Promise<void> {
         await this.logModel.create({
-            key: props.key,
+            process: props.process,
             log: JSON.stringify(props.log),
             type: 'warning',
             props: props.props,

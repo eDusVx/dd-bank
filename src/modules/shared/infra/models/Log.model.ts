@@ -1,22 +1,5 @@
 import { DataType, PrimaryKey, Table, Model, Column } from 'sequelize-typescript'
 
-export enum LOG_MODEL {
-    TABLE_NAME = 'log',
-    SCHEMA_NAME = 'autorizacao_verdecard',
-    ID = 'id',
-    LOG = 'log',
-    KEY = 'key',
-    TYPE = 'type',
-    CREATED_AT = 'created_at',
-    UPDATED_AT = 'updated_at',
-}
-
-export interface LogModelProps {
-    log: string
-    key: string
-    type: string
-}
-
 @Table({
     tableName: 'log',
 })
@@ -29,7 +12,7 @@ export class LogModel extends Model {
         type: DataType.TEXT,
         allowNull: false,
     })
-    key: string
+    process: string
 
     @Column({
         type: DataType.TEXT,

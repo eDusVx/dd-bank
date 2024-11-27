@@ -1,5 +1,5 @@
 export interface LogProps {
-    key: string
+    process: string
     log: any
     props: string
     result?: string
