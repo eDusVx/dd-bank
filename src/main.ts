@@ -20,7 +20,6 @@ async function bootstrap() {
         )
         .setVersion('1.0')
         .addBearerAuth()
-        .setBasePath('dd-bank')
         .build()
 
     const document = SwaggerModule.createDocument(app, config)
