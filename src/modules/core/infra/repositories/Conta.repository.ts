@@ -21,7 +21,8 @@ export class ContaRepositoryImpl implements ContaRepository {
                 },
             })
 
-            if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
+            if (!buscarConta)
+                throw new ContaNaoEncontradaException(`Nenhuma conta com o número ${numeroConta} foi encontrada`)
 
             const conta = this.contaMapper.modelToDomain(buscarConta)
 

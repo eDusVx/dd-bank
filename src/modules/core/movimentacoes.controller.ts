@@ -41,7 +41,7 @@ export class MovimentacoesController {
     @ApiUnprocessableEntityResponse({
         description: 'Retorno esperado do endpoit no caso de tentativa de deposito em conta INATIVA',
         example: {
-            message: 'A conta precisa estar com status ATIVA para efetuar a operação DEPOSITO',
+            message: 'A conta de número 1 precisa estar com status ATIVA para efetuar a operação DEPOSITO',
             error: 'StatusContaInvalidoEception',
             statusCode: 422,
         },
@@ -49,7 +49,7 @@ export class MovimentacoesController {
     @ApiNotFoundResponse({
         description: 'Retorno esperado do endpoint em caso de conta não encontrada',
         example: {
-            message: 'Nenhuma conta foi encontrada',
+            message: 'Nenhuma conta com o número 90 foi encontrada',
             error: 'ContaNaoEncontradaException',
             statusCode: 404,
         },
@@ -84,7 +84,7 @@ export class MovimentacoesController {
                     contaInativa: {
                         summary: 'Conta INATIVA',
                         value: {
-                            message: 'A conta precisa estar com status ATIVA para efetuar a operação SAQUE',
+                            message: 'A conta de número 1 precisa estar com status ATIVA para efetuar a operação SAQUE',
                             error: 'StatusContaInvalidoEception',
                             statusCode: 422,
                         },
@@ -104,7 +104,7 @@ export class MovimentacoesController {
     @ApiNotFoundResponse({
         description: 'Retorno esperado do endpoint em caso de conta não encontrada',
         example: {
-            message: 'Nenhuma conta foi encontrada',
+            message: 'Nenhuma conta com o número 90 foi encontrada',
             error: 'ContaNaoEncontradaException',
             statusCode: 404,
         },
@@ -140,7 +140,8 @@ export class MovimentacoesController {
                     contaInativa: {
                         summary: 'Conta INATIVA',
                         value: {
-                            message: 'A conta precisa estar com status ATIVA para efetuar a operação TRANSFERENCIA',
+                            message:
+                                'A conta de número 1 precisa estar com status ATIVA para efetuar a operação TRANSFERENCIA',
                             error: 'StatusContaInvalidoEception',
                             statusCode: 422,
                         },
@@ -160,7 +161,7 @@ export class MovimentacoesController {
     @ApiNotFoundResponse({
         description: 'Retorno esperado do endpoint em caso de conta não encontrada',
         example: {
-            message: 'Nenhuma conta foi encontrada',
+            message: 'Nenhuma conta com o número 90 foi encontrada',
             error: 'ContaNaoEncontradaException',
             statusCode: 404,
         },

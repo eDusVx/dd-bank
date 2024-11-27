@@ -225,10 +225,10 @@ export class Conta {
         }
     }
 
-    private validarStatusConta(tipoMovimentacao: TIPO_MOVIMENTACAO): void {
+    public validarStatusConta(tipoMovimentacao: TIPO_MOVIMENTACAO): void {
         if (this.status != STATUS_CONTA.ATIVA) {
             throw new StatusContaInvalidoEception(
-                `A conta precisa estar com status ${STATUS_CONTA.ATIVA} para efetuar a operação ${tipoMovimentacao}`,
+                `A conta de número ${this.numeroConta} precisa estar com status ${STATUS_CONTA.ATIVA} para efetuar a operação ${tipoMovimentacao}`,
             )
         }
     }

@@ -17,7 +17,11 @@ export class EfetuarTransferenciaUseCase {
         try {
             const contaOrigemSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
 
+            contaOrigemSaque.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
+
             const contaDestinoSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
+
+            contaDestinoSaque.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
 
             const transferencia = MovimentacaoFinanceira.criar({
                 valor: request.valor,

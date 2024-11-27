@@ -17,6 +17,8 @@ export class EfetuarSaqueUseCase {
         try {
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
 
+            conta.validarStatusConta(TIPO_MOVIMENTACAO.SAQUE)
+
             const saque = MovimentacaoFinanceira.criar({
                 valor: request.valor,
                 data: new Date(),

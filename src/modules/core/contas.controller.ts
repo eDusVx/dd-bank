@@ -116,7 +116,7 @@ export class ContasController {
     @ApiNotFoundResponse({
         description: 'Retorno esperado do endpoint em caso de não existir uma conta com o id passado',
         example: {
-            message: 'Nenhuma conta foi encontrada',
+            message: 'Nenhuma conta com o número 90 foi encontrada',
             error: 'ContaNaoEncontradaException',
             statusCode: 404,
         },
@@ -178,7 +178,7 @@ export class ContasController {
     @ApiNotFoundResponse({
         description: 'Retorno esperado do endpoint em caso de conta não encontrada',
         example: {
-            message: 'Nenhuma conta foi encontrada',
+            message: 'Nenhuma conta com o número 90 foi encontrada',
             error: 'ContaNaoEncontradaException',
             statusCode: 404,
         },

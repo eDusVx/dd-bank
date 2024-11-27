@@ -17,6 +17,8 @@ export class EfetuarDepositoUseCase {
         try {
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
 
+            conta.validarStatusConta(TIPO_MOVIMENTACAO.DEPOSITO)
+
             const deposito = MovimentacaoFinanceira.criar({
                 valor: request.valor,
                 data: new Date(),
