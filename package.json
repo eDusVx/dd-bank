@@ -1,6 +1,6 @@
 {
   "name": "dd-bank",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Aplicação que simula o funcionamento de um sistema bancário, implementando conceitos de Domain-Driven Design (DDD).",
   "author": "Eduardo Xavier <https://github.com/eDusVx>",
   "private": true,
@@ -25,6 +25,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^10.0.1",
+    "@nestjs/swagger": "^8.0.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
@@ -34,6 +35,7 @@
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

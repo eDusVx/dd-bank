@@ -12,18 +12,7 @@ export class ContaRepositoryImpl implements ContaRepository {
         private readonly contaModel: typeof ContaBancariaModel,
         private readonly contaMapper: ContaMapper,
     ) {}
-    async buscarTodos(): Promise<Conta[]> {
-        try {
-            const buscarConta = await this.contaModel.findAll()
 
-            if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
-
-            const contas = this.contaMapper.modelListToDomain(buscarConta)
-            return contas
-        } catch (e) {
-            throw e
-        }
-    }
     async buscarContaPorNumero(numeroConta: number): Promise<Conta> {
         try {
             const buscarConta = await this.contaModel.findOne({

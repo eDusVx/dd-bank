@@ -18,6 +18,8 @@ export const databaseProviders = [
 
             sequelize.addModels([...coreModels, ...sharedModels])
 
+            sequelize.sync()
+
             return sequelize
         },
     },

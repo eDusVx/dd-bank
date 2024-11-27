@@ -14,25 +14,7 @@ export class ClienteRepositoryImpl implements ClienteRepository {
         private readonly clienteModel: typeof ClienteModel,
         private readonly clienteMapper: ClienteMapper,
     ) {}
-    async buscarTodos(): Promise<Cliente[]> {
-        try {
-            const buscarCliente = await this.clienteModel.findAll<ClienteModel>({
-                include: [
-                    {
-                        model: ContaBancariaModel,
-                        attributes: ['numeroConta'],
-                    },
-                ],
-            })
 
-            if (!buscarCliente) throw new ClienteNaoEcontradoException(`Nenhum cliente foi encontrado`)
-
-            const cliente = this.clienteMapper.modelListToDomain(buscarCliente)
-            return cliente
-        } catch (e) {
-            throw e
-        }
-    }
     async buscarPorId(id: string): Promise<Cliente> {
         try {
             const buscarCliente = await this.clienteModel.findOne<ClienteModel>({

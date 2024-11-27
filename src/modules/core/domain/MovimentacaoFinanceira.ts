@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { DepositoMenorIgualZeroException } from './exceptions/DepositoMenorIgualZero.exception'
 import { isEmpty, isNumber, isPositive, maxDate, isDate, isString, isEnum, min } from 'class-validator'
-import { MovimentacaoFinanceiraException } from './exceptions/MovimentacaoFinanceitra.exception'
+import { MovimentacaoFinanceiraException } from './exceptions/MovimentacaoFinanceira.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',

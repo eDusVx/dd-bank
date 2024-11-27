@@ -10,12 +10,6 @@ export class BuscarContasQuery {
 
     async execute(request: number): Promise<ContaDto | ContaDto[]> {
         try {
-            if (!request) {
-                const buscarContas = await this.contaRepository.buscarTodos()
-
-                return buscarContas.map((conta) => conta.toDTO())
-            }
-
             const conta = await this.contaRepository.buscarContaPorNumero(request)
 
             return conta.toDTO()
