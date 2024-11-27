@@ -3,7 +3,7 @@ import { ContaBancariaModel } from '../models/Conta.model'
 import { BuscarProximIdQueryResponse, ContaRepository } from '../../domain/repositories/Conta.repository'
 import { Conta } from '../../domain/Conta'
 import { ContaMapper } from '../mappers/Conta.mapper'
-import { ContaNaoEcontradaException } from '../../domain/exceptions/ContaNaoEcontrada.exception'
+import { ContaNaoEncontradaException } from '../../domain/exceptions/ContaNaoEncontrada.exception'
 import { MovimentacaoFinanceiraModel } from '../models/MovimentacaoFinanceira.model'
 
 @Injectable()
@@ -25,7 +25,7 @@ export class ContaRepositoryImpl implements ContaRepository {
                 ],
             })
 
-            if (!buscarConta) throw new ContaNaoEcontradaException(`Nenhuma conta foi encontrada`)
+            if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
 
             const contas = this.contaMapper.modelListToDomain(buscarConta)
             return contas
@@ -46,7 +46,7 @@ export class ContaRepositoryImpl implements ContaRepository {
                 ],
             })
 
-            if (!buscarConta) throw new ContaNaoEcontradaException(`Nenhuma conta foi encontrada`)
+            if (!buscarConta) throw new ContaNaoEncontradaException(`Nenhuma conta foi encontrada`)
 
             const conta = this.contaMapper.modelToDomain(buscarConta)
 

@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common'
 import { Cliente, ClienteDto } from '../../domain/Cliente'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
-import { CadastrarClienteRequestDto } from '../dto/Cliente.dto'
+import { CadastrarClienteRequestDto } from '../requests/Cliente.request'
 
 export class CadastrarClienteUseCase {
     constructor(

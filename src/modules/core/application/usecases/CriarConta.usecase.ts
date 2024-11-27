@@ -1,14 +1,14 @@
 import { Inject } from '@nestjs/common'
 import { Conta, ContaDto } from '../../domain/Conta'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
-import { CriarContaRequestDto } from '../dto/Conta.dto'
+import { CriarContaRequest } from '../requests/Conta.request'
 
 export class CriarContaUseCase {
     constructor(
         @Inject('ContaRepository')
         private readonly contaRepository: ContaRepository,
     ) {}
-    async execute(request: CriarContaRequestDto): Promise<ContaDto> {
+    async execute(request: CriarContaRequest): Promise<ContaDto> {
         try {
             const idConta = await this.contaRepository.buscarProximoId()
 

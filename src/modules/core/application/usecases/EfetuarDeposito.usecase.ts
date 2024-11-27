@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
-import { ContaNaoEcontradaException } from '../../domain/exceptions/ContaNaoEcontrada.exception'
+
 import {
     MovimentacaoFinanceira,
     MovimentacaoFinanceiraDto,
     TIPO_MOVIMENTACAO,
 } from '../../domain/MovimentacaoFinanceira'
-import { EfeturarDepositoRequestDto } from '../dto/MovimentacaoFinanceira.dto'
+import { EfeturarDepositoRequestDto } from '../requests/MovimentacaoFinanceira.request'
 
 export class EfetuarDepositoUseCase {
     constructor(
@@ -16,7 +16,7 @@ export class EfetuarDepositoUseCase {
     async execute(request: EfeturarDepositoRequestDto): Promise<MovimentacaoFinanceiraDto> {
         try {
             const conta = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
-            if (!conta) throw new ContaNaoEcontradaException('Nenhuma conta encontrada')
+            // if (!conta) throw new ContaNaoEcontradaException('Nenhuma conta encontrada')
 
             const deposito = MovimentacaoFinanceira.criar({
                 valor: request.valor,

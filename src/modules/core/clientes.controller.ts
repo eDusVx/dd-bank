@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { CadastrarClienteUseCase } from './application/usecases/CadastrarCliente.usecase'
 import { BuscarClientesQuery } from './application/queries/BuscarClientes.query'
-import { CadastrarClienteRequestDto } from './application/dto/Cliente.dto'
+import { CadastrarClienteRequestDto } from './application/requests/Cliente.request'
 import { ClienteDto } from './domain/Cliente'
 
 @Controller('clientes')

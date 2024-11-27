@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
-import { ContaNaoEcontradaException } from '../../domain/exceptions/ContaNaoEcontrada.exception'
+
 import {
     MovimentacaoFinanceira,
     MovimentacaoFinanceiraDto,
     TIPO_MOVIMENTACAO,
 } from '../../domain/MovimentacaoFinanceira'
-import { EfeturarTransferenciaRequestDto } from '../dto/MovimentacaoFinanceira.dto'
+import { EfeturarTransferenciaRequestDto } from '../requests/MovimentacaoFinanceira.request'
 
 export class EfetuarTransferenciaUseCase {
     constructor(
@@ -16,14 +16,14 @@ export class EfetuarTransferenciaUseCase {
     async execute(request: EfeturarTransferenciaRequestDto): Promise<MovimentacaoFinanceiraDto> {
         try {
             const contaOrigemSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
-            if (!contaOrigemSaque) {
-                throw new ContaNaoEcontradaException('Conta de origem não encontrada')
-            }
+            // if (!contaOrigemSaque) {
+            //     throw new ContaNaoEcontradaException('Conta de origem não encontrada')
+            // }
 
             const contaDestinoSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
-            if (!contaDestinoSaque) {
-                throw new ContaNaoEcontradaException('Conta de destino não encontrada')
-            }
+            // if (!contaDestinoSaque) {
+            //     throw new ContaNaoEcontradaException('Conta de destino não encontrada')
+            // }
 
             const transferencia = MovimentacaoFinanceira.criar({
                 valor: request.valor,

@@ -4,7 +4,7 @@ import {
     EfeturarDepositoRequestDto,
     EfeturarSaqueRequestDto,
     EfeturarTransferenciaRequestDto,
-} from './application/dto/MovimentacaoFinanceira.dto'
+} from './application/requests/MovimentacaoFinanceira.request'
 import { EfetuarSaqueUseCase } from './application/usecases/EfetuarSaque.usecase'
 import { EfetuarTransferenciaUseCase } from './application/usecases/EfetuarTransferencia.usecase'
 import { MovimentacaoFinanceiraDto } from './domain/MovimentacaoFinanceira'

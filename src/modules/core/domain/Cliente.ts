@@ -1,3 +1,7 @@
+import { isArray, isEmpty, isNumber, isString, matches } from 'class-validator'
+import { isLength } from 'validator'
+import { ClienteException } from './exceptions/Cliente.exception'
+
 export interface ClienteDto {
     cpf: string
     nome: string
@@ -58,6 +62,8 @@ export class Cliente {
 
     private setNome(nome: string) {
         try {
+            if (isEmpty(nome)) throw new ClienteException('O nome do cliente não pode ser nulo')
+            if (!isString(nome)) throw new ClienteException('O cpf do cliente deve ser do tipo string')
             this.nome = nome
         } catch (e) {
             throw e
@@ -66,6 +72,11 @@ export class Cliente {
 
     private setCpf(cpf: string) {
         try {
+            if (isEmpty(cpf)) throw new ClienteException('O cpf do cliente não pode ser nulo')
+            if (!isString(cpf)) throw new ClienteException('O cpf do cliente deve ser do tipo string')
+            if (!isLength(cpf, { min: 11, max: 11 }))
+                throw new ClienteException('O cpf do cliente deve ter 11 dígitos.')
+            if (!matches(cpf, /^\d{11}$/)) throw new ClienteException('O CPF deve conter apenas números.')
             this.cpf = cpf
         } catch (e) {
             throw e
@@ -82,6 +93,11 @@ export class Cliente {
 
     private setContas(contas: number[]) {
         try {
+            if (isEmpty(contas)) throw new ClienteException('As contas do cliente não podem ser nulas')
+            if (!isArray(contas)) throw new ClienteException('As contas do cliente devem ser do tipo array')
+            if (!contas.every((item) => isNumber(item))) {
+                throw new ClienteException('As contas do cliente devem ser apenas números')
+            }
             this.contas = contas
         } catch (e) {
             throw e

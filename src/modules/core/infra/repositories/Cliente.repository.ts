@@ -4,7 +4,7 @@ import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 import { Cliente } from '../../domain/Cliente'
 import { ClienteMapper } from '../mappers/Cliente.mapper'
 import { ClienteJaCadastradoException } from '../../domain/exceptions/ClienteJaCadastrado.exception'
-import { ClienteNaoEcontradoException } from '../../domain/exceptions/ClienteNaoEcontrado.exception'
+import { ClienteNaoEcontradoException } from '../../domain/exceptions/ClienteNaoEncontrado.exception'
 import { ContaBancariaModel } from '../models/Conta.model'
 
 @Injectable()

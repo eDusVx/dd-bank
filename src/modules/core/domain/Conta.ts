@@ -1,6 +1,9 @@
+import { isArray, isEmpty, isEnum, isNegative, isNumber, isString, matches } from 'class-validator'
+import { ContaException } from './exceptions/Conta.exception'
 import { SaldoInsuficienteException } from './exceptions/SaldoInsuficiente.exception'
 import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
 import { MovimentacaoFinanceira, MovimentacaoFinanceiraDto, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
+import { isLength } from 'validator'
 
 export enum STATUS_CONTA {
     ATIVA = 'ATIVA',
@@ -43,7 +46,7 @@ export class Conta {
         try {
             instance.setSaldo(0)
             instance.setStatus(STATUS_CONTA.ATIVA)
-            instance.setClienteId(props.clienteId)
+            instance.setClienteId('00000000001' as any)
         } catch (e) {
             throw e
         }
@@ -67,7 +70,9 @@ export class Conta {
 
     private setSaldo(saldo: number) {
         try {
-            this.saldo = saldo
+            if (isEmpty(saldo)) throw new ContaException('O saldo não pode ser nulo')
+            if (!isNumber(saldo)) throw new ContaException('O saldo deve ser do tipo number')
+            if (isNegative(saldo)) throw new ContaException('O saldo não pode ser negativo')
         } catch (e) {
             throw e
         }
@@ -75,6 +80,12 @@ export class Conta {
 
     private setStatus(status: STATUS_CONTA) {
         try {
+            if (isEmpty(status)) throw new ContaException('O status não pode ser nulo')
+            if (!isString(status)) throw new ContaException('O status deve ser do tipo string')
+            if (!isEnum(status, STATUS_CONTA)) {
+                throw new ContaException(`Status de conta inválido, deve ser [${Object.values(STATUS_CONTA)}]`)
+            }
+
             this.status = status
         } catch (e) {
             throw e
@@ -83,6 +94,12 @@ export class Conta {
 
     private setClienteId(clienteId: string) {
         try {
+            if (isEmpty(clienteId)) throw new ContaException('O cpf do cliente não pode ser nulo')
+            if (!isString(clienteId)) throw new ContaException('O cpf do cliente deve ser do tipo string')
+            if (!isLength(clienteId, { min: 11, max: 11 }))
+                throw new ContaException('O cpf do cliente deve ter 11 dígitos.')
+            if (!matches(clienteId, /^\d{11}$/)) throw new ContaException('O CPF deve conter apenas números.')
+
             this.clienteId = clienteId
         } catch (e) {
             throw e
@@ -91,6 +108,11 @@ export class Conta {
 
     private setMovimentacaoFinanceira(movimentacaoFinanceira: MovimentacaoFinanceira[]) {
         try {
+            if (isEmpty(movimentacaoFinanceira))
+                throw new ContaException('As movimentações financeiras não podem ser nulas')
+            if (!isArray(movimentacaoFinanceira))
+                throw new ContaException('As movimentações financeiras devem ser do tipo array')
+
             this.movimentacaoFinanceira = movimentacaoFinanceira
         } catch (e) {
             throw e
