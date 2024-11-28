@@ -31,13 +31,13 @@ export interface ContaDto {
 }
 
 export class Conta {
-    private numeroConta?: number
+    private numeroConta: number
     private saldo: number
     private status: STATUS_CONTA
     private clienteId: string
     private movimentacaoFinanceira: MovimentacaoFinanceira[]
 
-    private constructor(numeroConta?: number) {
+    private constructor(numeroConta: number) {
         this.numeroConta = numeroConta
     }
 

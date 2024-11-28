@@ -14,7 +14,7 @@ export interface MovimentacaoFinanceiraDto {
     valor: number
     data: Date
     tipoMovimentacao: TIPO_MOVIMENTACAO
-    numeroContaOrigem: number
+    numeroContaOrigem?: number
     numeroContaDestino?: number
 }
 
