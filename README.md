@@ -287,7 +287,7 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 ### Se preferir importar a coleção do Postman com os exemplos, basta baixar e importar no endereço:
 
-[![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)]([./postman/collection.json](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json))
+[![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
 
 
 ### **Clientes**
