@@ -4,6 +4,7 @@ import { BuscarClientesQuery } from './application/queries/BuscarClientes.query'
 import { CadastrarClienteRequest, LogarClienteRequest } from './application/requests/Cliente.request'
 import { ClienteDto } from './domain/Cliente'
 import {
+    ApiBadRequestResponse,
     ApiCreatedResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
@@ -31,28 +32,11 @@ export class ClientesController {
         },
     })
     @ApiUnprocessableEntityResponse({
-        description: 'Retorno esperado do endpoint em caso de dados inválidos',
-        content: {
-            'application/json': {
-                examples: {
-                    cpfNulo: {
-                        summary: 'CPF Nulo',
-                        value: {
-                            message: 'O parâmetro cpf deve ser informado',
-                            error: 'DadosNaoInformadosException',
-                            statusCode: 400,
-                        },
-                    },
-                    senhaInvalida: {
-                        summary: 'Senha não atende os requisitos',
-                        value: {
-                            message: 'A senha deve conter pelo menos um caractere especial (@, $, !, %, *, ?, &, #).',
-                            error: 'ClienteException',
-                            statusCode: 422,
-                        },
-                    },
-                },
-            },
+        description: 'Retorno esperado do endpoint em caso de senha inválida',
+        example: {
+            message: 'A senha deve conter pelo menos um caractere especial (@, $, !, %, *, ?, &, #).',
+            error: 'ClienteException',
+            statusCode: 422,
         },
     })
     @ApiNotFoundResponse({
@@ -61,6 +45,14 @@ export class ClientesController {
             message: 'Nenhum cliente com cpf 00000000001111 foi encontrado',
             error: 'ClienteNaoEcontradoException',
             statusCode: 404,
+        },
+    })
+    @ApiBadRequestResponse({
+        description: 'Retorno esperado no caso do cpf não ser informado',
+        example: {
+            message: 'O parâmetro cpf deve ser informado',
+            error: 'DadosNaoInformadosException',
+            statusCode: 400,
         },
     })
     @Post('login')
