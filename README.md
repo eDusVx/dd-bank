@@ -137,11 +137,6 @@ A tabela `cliente` armazena informações relacionadas aos clientes do sistema, 
 - **senha**: Senha criptografada do cliente.
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
-
-#### Relacionamento
-
-- A tabela `cliente` possui um relacionamento de **1 para N** com a tabela `conta_bancaria`, ou seja, um cliente pode ter várias contas bancárias associadas. Esse relacionamento é mapeado através da relação de chave estrangeira `cliente_id` na tabela `conta_bancaria`.
-
 ---
 
 ### Tabela **conta_bancaria**
@@ -168,6 +163,32 @@ A tabela `conta_bancaria` armazena informações sobre as contas bancárias dos 
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
 
+### Tabela **log**
+
+A tabela `log` armazena os logs de todas as execuções de endpoints da aplicação, registrando os parâmetros de entrada, saida e erros caso existam. Essa tabela pode ser utilizada para ter um controle de todos os processos executados no sistema, incluindo as movimentações entre contas, retornando as props da movimentação e o resultado da execução.
+
+| Coluna               | Tipo                       | Propriedades                          |
+| -------------------- | -------------------------- | ------------------------------------- |
+| `id`                 | `UUID`                     | PK, Not Null                          |
+| `process`            | `VARCHAR(255)`             | Not Null                              |
+| `log`                | `VARCHAR(255)`             | Not Null                              |
+| `props`              | `VARCHAR(255)`             | Not Null                              |
+| `result`             | `VARCHAR(255)`             | Not Null                              |
+| `type`               | `string`                   | Timestamps, Automático                |
+| `created_at`         | `TIMESTAMP`                | Timestamps, Automático                |
+| `updated_at`         | `TIMESTAMP`                | Timestamps, Automático                |
+
+#### Descrição
+
+- **id**: Identificador único do log (Chave Primária).
+- **process**: Processo executado nesse log (buscarConta, efetuarDeposito, efetuarSaque...).
+- **log**: Log retornado do processo, execução com sucesso ou falha.
+- **props**: Parâmetros de entrada do processo.
+- **result**: Resultado do processo, podendo ser também um erro retornado.
+- **type**: Tipo do log(error,log,warn...).
+- **created_at**: Data de criação do registro.
+- **updated_at**: Data da última atualização do registro.
+  
 ---
 
 # Instruções de Instalação e Execução
