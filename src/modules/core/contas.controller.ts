@@ -81,7 +81,6 @@ export class ContasController {
         }
     }
 
-
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get(':id')
@@ -179,8 +178,16 @@ export class ContasController {
     @ApiUnprocessableEntityResponse({
         description: 'Retorno esperado do endpoint em caso de dados inválidos',
         example: {
-            message: 'O status não pode ser nulo',
-            error: 'ContaException',
+            message: 'O novo status de conta informado é inválido deve ser ATIVA ou INATIVA',
+            error: 'StatusContaInexistenteException',
+            statusCode: 422,
+        },
+    })
+    @ApiUnprocessableEntityResponse({
+        description: 'Retorno esperado do endpoint em caso de o status conta já ser o mesmo a ser alterado',
+        example: {
+            message: 'O status da conta já é ATIVA',
+            error: 'MesmoStatusContaException',
             statusCode: 422,
         },
     })

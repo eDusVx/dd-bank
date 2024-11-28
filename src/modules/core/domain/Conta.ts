@@ -4,6 +4,8 @@ import { SaldoInsuficienteException } from './exceptions/SaldoInsuficiente.excep
 import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
 import { MovimentacaoFinanceira, MovimentacaoFinanceiraDto, TIPO_MOVIMENTACAO } from './MovimentacaoFinanceira'
 import { isLength } from 'validator'
+import { StatusContaInexistenteException } from './exceptions/StatusContaInexistente.exception'
+import { MesmoStatusContaException } from './exceptions/MesmoStatusConta.exception'
 
 export enum STATUS_CONTA {
     ATIVA = 'ATIVA',
@@ -161,6 +163,7 @@ export class Conta {
 
     public atualizarStatus(status: STATUS_CONTA): void {
         try {
+            this.validarExistenciaStatus(status)
             this.setStatus(status)
         } catch (e) {
             throw e
@@ -209,6 +212,8 @@ export class Conta {
         try {
             let novoSaldo: number
 
+            movimentacao.validarTransferencia()
+
             movimentacao.validarTipoMovimentacao(TIPO_MOVIMENTACAO.TRANSFERENCIA)
 
             this.validarStatusConta(movimentacao.getTipoMovimentacao())
@@ -237,6 +242,16 @@ export class Conta {
             throw new StatusContaInvalidoEception(
                 `A conta de número ${this.numeroConta} precisa estar com status ${STATUS_CONTA.ATIVA} para efetuar a operação ${tipoMovimentacao}`,
             )
+        }
+    }
+
+    private validarExistenciaStatus(status: STATUS_CONTA) {
+        if (isEmpty(status) || !STATUS_CONTA[status])
+            throw new StatusContaInexistenteException(
+                `O novo status de conta informado é inválido deve ser ${STATUS_CONTA.ATIVA} ou ${STATUS_CONTA.INATIVA}`,
+            )
+        if (status == this.status) {
+            throw new MesmoStatusContaException(`O status da conta já é ${this.status}`)
         }
     }
 

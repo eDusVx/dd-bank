@@ -162,6 +162,14 @@ export class MovimentacoesController {
                             statusCode: 422,
                         },
                     },
+                    mesmaConta: {
+                        summary: 'Transferência para a mesma conta',
+                        value: {
+                            message: 'As contas devem ser diferentes para realizar uma TRANSFERENCIA',
+                            error: 'MesmaContaTransferenciaException',
+                            statusCode: 422,
+                        },
+                    },
                 },
             },
         },

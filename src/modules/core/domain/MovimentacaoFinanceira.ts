@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { isEmpty, isNumber, isPositive, maxDate, isDate, isString, isEnum, min } from 'class-validator'
 import { MovimentacaoFinanceiraException } from './exceptions/MovimentacaoFinanceira.exception'
 import { TipoMovimetacaoInvalidoException } from './exceptions/TipoMovimetacaoInvalido.exception'
+import { MesmaContaTransferenciaException } from './exceptions/MesmaContaTransferencia.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',
@@ -187,7 +188,15 @@ export class MovimentacaoFinanceira {
     }
 
     public validarTipoMovimentacao(tipoMovimentacao: TIPO_MOVIMENTACAO): void {
-        if(this.tipoMovimentacao != tipoMovimentacao)
-            throw new TipoMovimetacaoInvalidoException("O tipo do processo efetuado em conta é diferente da movimentação enviada")
+        if (this.tipoMovimentacao != tipoMovimentacao)
+            throw new TipoMovimetacaoInvalidoException(
+                'O tipo do processo efetuado em conta é diferente da movimentação enviada',
+            )
+    }
+
+    public validarTransferencia(): void {
+        if (this.numeroContaDestino == this.numeroContaOrigem) {
+            throw new MesmaContaTransferenciaException('As contas devem ser diferentes para realizar uma transferência')
+        }
     }
 }
