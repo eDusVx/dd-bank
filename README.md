@@ -236,7 +236,7 @@ git clone https://github.com/eDusVx/dd-bank.git
 cd dd-bank
 ```
 
-### Passo 3: Configurar variaveis de amibente criando um arquivo .env na raiz do projeto por exemplo:
+### Passo 3: Configurar variaveis de amibente criando um arquivo .env na raiz do projeto por exemplo(No caso do docker o banco não precisa ser previamente criado, os dados inseridos no env serão os dados de criação da instancia do pg via docker):
 
 ```bash
 APP_PORT=3000 # Porta de subida da aplicação
