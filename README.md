@@ -277,6 +277,19 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 `http://localhost:{APP_PORT}/dd-bank`
 
+## **Documentação via swagger**
+
+### Para acessar a documentação mais detalhada das rotas e tipos de retorno/entrada em cada rota acesse a documentação do swagger no endereço:
+
+`http://localhost:{APP_PORT}/dd-bank/docs`
+
+## Postman Collection
+
+### Se preferir importar a coleção do Postman com os exemplos, basta baixar e importar no endereço:
+
+[![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](./postman/collection.json)
+
+
 ### **Clientes**
 
 - **Atributos**: Nome completo, CPF (único e validado), Data de Nascimento.
@@ -304,11 +317,4 @@ npm run test:cov     # Executa os testes com cobertura de código
     - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
     - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
     - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
-
-## **Documentação via swagger**
-
-### Para acessar a documentação mais detalhada das rotas e tipos de retorno/entrada em cada rota acesse a documentação do swagger no endereço:
-
-`http://localhost:{APP_PORT}/dd-bank/docs`
-
 ---
