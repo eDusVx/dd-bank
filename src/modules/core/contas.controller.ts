@@ -5,6 +5,7 @@ import { AtualizarStatusContaUseCase } from './application/usecases/AualizarStat
 import { BuscarContasQuery } from './application/queries/BuscarContas.query'
 import { ContaDto } from './domain/Conta'
 import {
+    ApiBearerAuth,
     ApiCreatedResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
@@ -23,6 +24,7 @@ export class ContasController {
         private readonly buscarContasQuery: BuscarContasQuery,
     ) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post('')
     @ApiOperation({ summary: 'Cadastra uma nova conta no sistema' })
@@ -79,6 +81,8 @@ export class ContasController {
         }
     }
 
+
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get(':id')
     @ApiOperation({ summary: 'Busca uma conta no sistema' })
@@ -134,6 +138,7 @@ export class ContasController {
         }
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Patch(':id')
     @ApiOperation({ summary: 'Atualiza o status de uma conta existente' })

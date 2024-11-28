@@ -5,6 +5,7 @@ import { CadastrarClienteRequest, LogarClienteRequest } from './application/requ
 import { ClienteDto } from './domain/Cliente'
 import {
     ApiBadRequestResponse,
+    ApiBearerAuth,
     ApiCreatedResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
@@ -119,6 +120,7 @@ export class ClientesController {
         }
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get(':id')
     @ApiOperation({ summary: 'Busca um cliente no sistema' })

@@ -10,6 +10,7 @@ import {
     EfeturarTransferenciaRequest,
 } from './application/requests/MovimentacaoFinanceira.request'
 import {
+    ApiBearerAuth,
     ApiCreatedResponse,
     ApiNotFoundResponse,
     ApiOperation,
@@ -27,6 +28,7 @@ export class MovimentacoesController {
         private readonly efetuarTransferenciaUseCase: EfetuarTransferenciaUseCase,
     ) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post('deposito')
     @ApiOperation({ summary: 'Efetua um novo deposito em uma conta' })
@@ -66,6 +68,7 @@ export class MovimentacoesController {
         }
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post('saque')
     @ApiOperation({ summary: 'Efetua um novo saque em uma conta' })
@@ -122,6 +125,7 @@ export class MovimentacoesController {
         }
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post('transferencia')
     @ApiOperation({ summary: 'Efetua uma transferencia de valores entre contas' })
