@@ -45,6 +45,7 @@ export class ClienteMapper {
             cpf: domain.getCpf(),
             nome: domain.getNome(),
             dataNascimento: domain.getDataNascimento(),
+            senha: domain.getSenha(),
         })
 
         return model
