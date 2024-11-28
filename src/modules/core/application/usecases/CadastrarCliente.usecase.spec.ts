@@ -3,6 +3,7 @@ import { CadastrarClienteUseCase } from './CadastrarCliente.usecase'
 import { ClienteRepository } from '../../domain/repositories/Cliente.repository'
 import { CadastrarClienteRequest } from '../requests/Cliente.request'
 import { ClienteException } from '../../domain/exceptions/Cliente.exception'
+import { ClienteJaCadastradoException } from '../../domain/exceptions/ClienteJaCadastrado.exception'
 
 const mockClienteRepository = {
     salvarCliente: jest.fn(),
@@ -79,10 +80,25 @@ describe('CadastrarClienteUseCase', () => {
         const request: CadastrarClienteRequest = {
             nome: 'João Silva',
             cpf: '12345678901',
-            dataNascimento: "INVALIDO" as any,
+            dataNascimento: 'INVALIDO' as any,
             senha: 'Hudu*0101',
         }
 
         await expect(useCase.execute(request)).rejects.toThrow(ClienteException)
+    })
+
+    it('deve lançar erro ao tentar cadastrar um cliente já cadastrado', async () => {
+        const request: CadastrarClienteRequest = {
+            nome: 'João Silva',
+            cpf: '12345678901',
+            dataNascimento: new Date('1990-01-01'),
+            senha: 'Hudu*0101',
+        }
+
+        mockClienteRepository.salvarCliente.mockRejectedValue(
+            new ClienteJaCadastradoException(`Já existe um cliente com cpf 12345678901 cadastrado`),
+        )
+
+        await expect(useCase.execute(request)).rejects.toThrow(ClienteJaCadastradoException)
     })
 })
