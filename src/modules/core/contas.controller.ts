@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { AtualizarStatusContaRequest, CriarContaRequest } from './application/requests/Conta.request'
 import { CriarContaUseCase } from './application/usecases/CriarConta.usecase'
 import { AtualizarStatusContaUseCase } from './application/usecases/AualizarStatusConta.usecase'
@@ -12,6 +12,7 @@ import {
     ApiTags,
     ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
+import { AuthGuard } from '../shared/guards/Auth.guard'
 
 @ApiTags('Contas')
 @Controller('contas')
@@ -22,6 +23,7 @@ export class ContasController {
         private readonly buscarContasQuery: BuscarContasQuery,
     ) {}
 
+    @UseGuards(AuthGuard)
     @Post('')
     @ApiOperation({ summary: 'Cadastra uma nova conta no sistema' })
     @ApiCreatedResponse({
@@ -77,6 +79,7 @@ export class ContasController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Get(':id')
     @ApiOperation({ summary: 'Busca uma conta no sistema' })
     @ApiOkResponse({
@@ -131,6 +134,7 @@ export class ContasController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Patch(':id')
     @ApiOperation({ summary: 'Atualiza o status de uma conta existente' })
     @ApiOkResponse({

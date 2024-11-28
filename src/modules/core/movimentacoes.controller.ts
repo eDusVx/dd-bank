@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { EfetuarDepositoUseCase } from './application/usecases/EfetuarDeposito.usecase'
 
 import { EfetuarSaqueUseCase } from './application/usecases/EfetuarSaque.usecase'
@@ -16,6 +16,7 @@ import {
     ApiTags,
     ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
+import { AuthGuard } from '../shared/guards/Auth.guard'
 
 @ApiTags('Movimentacoes')
 @Controller('movimentacoes')
@@ -26,6 +27,7 @@ export class MovimentacoesController {
         private readonly efetuarTransferenciaUseCase: EfetuarTransferenciaUseCase,
     ) {}
 
+    @UseGuards(AuthGuard)
     @Post('deposito')
     @ApiOperation({ summary: 'Efetua um novo deposito em uma conta' })
     @ApiCreatedResponse({
@@ -64,6 +66,7 @@ export class MovimentacoesController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Post('saque')
     @ApiOperation({ summary: 'Efetua um novo saque em uma conta' })
     @ApiCreatedResponse({
@@ -119,6 +122,7 @@ export class MovimentacoesController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Post('transferencia')
     @ApiOperation({ summary: 'Efetua uma transferencia de valores entre contas' })
     @ApiCreatedResponse({

@@ -1,6 +1,8 @@
 import { isArray, isDate, isEmpty, isNumber, isString, matches, maxDate } from 'class-validator'
 import { isLength } from 'validator'
 import { ClienteException } from './exceptions/Cliente.exception'
+import * as bcrypt from 'bcrypt'
+import { SenhaInvalidaException } from './exceptions/SenhaInvalida.excpetion'
 
 export interface ClienteDto {
     cpf: string
@@ -13,6 +15,7 @@ export interface CriarClienteProps {
     cpf: string
     nome: string
     dataNascimento: Date
+    senha: string
 }
 
 export interface CarregarClienteProps {
@@ -20,6 +23,7 @@ export interface CarregarClienteProps {
     nome: string
     dataNascimento: Date
     contas: number[]
+    senha: string
 }
 
 export class Cliente {
@@ -27,6 +31,7 @@ export class Cliente {
     private nome: string
     private dataNascimento: Date
     private contas: number[]
+    private senha: string
 
     private constructor(cpf: string) {
         this.cpf = cpf
@@ -39,6 +44,7 @@ export class Cliente {
             instance.setCpf(props.cpf)
             instance.setDataNascimento(props.dataNascimento)
             instance.setContas([])
+            instance.setSenha(props.senha)
         } catch (e) {
             throw e
         }
@@ -53,6 +59,7 @@ export class Cliente {
             instance.setCpf(props.cpf)
             instance.setDataNascimento(props.dataNascimento)
             instance.setContas(props.contas)
+            instance.setSenhaCarregada(props.senha)
         } catch (e) {
             throw e
         }
@@ -108,6 +115,51 @@ export class Cliente {
         } catch (e) {
             throw e
         }
+    }
+
+    private setSenha(senha: string): void {
+        try {
+            if (isEmpty(senha)) throw new ClienteException('A senha do cliente não pode ser nula.')
+            if (!isString(senha)) throw new ClienteException('A senha do cliente deve ser do tipo string.')
+            if (!isLength(senha, { min: 8, max: 20 }))
+                throw new ClienteException('A senha deve ter entre 8 e 20 caracteres.')
+            if (!matches(senha, /\d/)) throw new ClienteException('A senha deve conter pelo menos um número.')
+            if (!matches(senha, /[A-Z]/))
+                throw new ClienteException('A senha deve conter pelo menos uma letra maiúscula.')
+            if (!matches(senha, /[a-z]/))
+                throw new ClienteException('A senha deve conter pelo menos uma letra minúscula.')
+            if (!matches(senha, /[@$!%*?&#]/))
+                throw new ClienteException(
+                    'A senha deve conter pelo menos um caractere especial (@, $, !, %, *, ?, &, #).',
+                )
+            this.senha = bcrypt.hashSync(senha, 10)
+        } catch (e) {
+            throw e
+        }
+    }
+
+    private async setSenhaCarregada(senha: string) {
+        try {
+            if (isEmpty(senha)) throw new ClienteException('A senha do cliente não pode ser nula')
+            if (!isString(senha)) throw new ClienteException('O senha do cliente deve ser do tipo string')
+            this.senha = senha
+        } catch (e) {
+            throw e
+        }
+    }
+
+    public verificarSenha(senha: string): void {
+        try {
+            const verificarSenha = bcrypt.compareSync(senha, this.senha)
+
+            if (!verificarSenha) throw new SenhaInvalidaException('A senha do cliente está incorreta')
+        } catch (e) {
+            throw e
+        }
+    }
+
+    public getSenha(): string {
+        return this.senha
     }
 
     public getNome(): string {

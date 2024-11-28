@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { CadastrarClienteUseCase } from './application/usecases/CadastrarCliente.usecase'
 import { BuscarClientesQuery } from './application/queries/BuscarClientes.query'
-import { CadastrarClienteRequest } from './application/requests/Cliente.request'
+import { CadastrarClienteRequest, LogarClienteRequest } from './application/requests/Cliente.request'
 import { ClienteDto } from './domain/Cliente'
 import {
     ApiCreatedResponse,
@@ -11,6 +11,8 @@ import {
     ApiTags,
     ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
+import { AuthGuard } from '../shared/guards/Auth.guard'
+import { EfetuarLoginClienteUseCase } from './application/usecases/EfetuarLoginCliente.usecase'
 
 @ApiTags('Clientes')
 @Controller('clientes')
@@ -18,7 +20,18 @@ export class ClientesController {
     constructor(
         private readonly cadastrarClienteUseCase: CadastrarClienteUseCase,
         private readonly buscarClientesQuery: BuscarClientesQuery,
+        private readonly efetuarLoginClienteUseCase: EfetuarLoginClienteUseCase,
     ) {}
+
+    @Post('login')
+    async login(@Body() request: LogarClienteRequest) {
+        try {
+            const response = await this.efetuarLoginClienteUseCase.execute(request)
+            return response
+        } catch (e) {
+            throw e
+        }
+    }
 
     @Post('')
     @ApiOperation({ summary: 'Cadastra um novo cliente no sistema' })
@@ -74,6 +87,7 @@ export class ClientesController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Get(':id')
     @ApiOperation({ summary: 'Busca um cliente no sistema' })
     @ApiOkResponse({

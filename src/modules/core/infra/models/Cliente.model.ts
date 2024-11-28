@@ -30,6 +30,13 @@ export class ClienteModel extends Model {
     })
     dataNascimento: Date
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+        field: 'senha',
+    })
+    senha: string
+
     @HasMany(() => ContaBancariaModel)
     contas: ContaBancariaModel[]
 }

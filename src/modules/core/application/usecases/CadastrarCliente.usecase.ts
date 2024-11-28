@@ -14,6 +14,7 @@ export class CadastrarClienteUseCase {
                 nome: request.nome,
                 cpf: request.cpf,
                 dataNascimento: new Date(request.dataNascimento),
+                senha: request.senha,
             })
 
             await this.clienteRepository.salvarCliente(cliente)

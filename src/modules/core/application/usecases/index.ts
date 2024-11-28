@@ -4,6 +4,7 @@ import { CriarContaUseCase } from './CriarConta.usecase'
 import { EfetuarDepositoUseCase } from './EfetuarDeposito.usecase'
 import { EfetuarSaqueUseCase } from './EfetuarSaque.usecase'
 import { EfetuarTransferenciaUseCase } from './EfetuarTransferencia.usecase'
+import { EfetuarLoginClienteUseCase } from './EfetuarLoginCliente.usecase'
 
 export const usecases = [
     CadastrarClienteUseCase,
@@ -12,4 +13,5 @@ export const usecases = [
     EfetuarDepositoUseCase,
     EfetuarSaqueUseCase,
     EfetuarTransferenciaUseCase,
+    EfetuarLoginClienteUseCase,
 ]

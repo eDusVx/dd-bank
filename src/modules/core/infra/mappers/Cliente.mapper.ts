@@ -12,6 +12,7 @@ export class ClienteMapper {
                 cpf: model.cpf,
                 dataNascimento: model.dataNascimento,
                 contas: model.contas.map((conta) => conta.numeroConta),
+                senha: model.senha,
             })
             return clienteDomain
         } catch (e) {
@@ -29,6 +30,7 @@ export class ClienteMapper {
                     cpf: cliente.cpf,
                     dataNascimento: cliente.dataNascimento,
                     contas: cliente.contas.map((conta) => conta.numeroConta),
+                    senha: cliente.senha,
                 })
                 clientesDomain.push(domain)
             }

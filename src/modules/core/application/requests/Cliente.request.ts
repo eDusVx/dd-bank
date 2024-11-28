@@ -18,4 +18,19 @@ export class CadastrarClienteRequest {
         example: '2000-05-12',
     })
     dataNascimento: Date
+
+
+    @ApiProperty({
+        description: 'Senha do cliente para cadastro no sistema',
+        example: '1234567',
+    })
+    senha: string
+}
+
+export class LogarClienteRequest {
+    @ApiProperty({ description: 'E-mail do usuário' })
+    cpf: string
+
+    @ApiProperty({ description: 'Senha do usuário' })
+    senha: string
 }
