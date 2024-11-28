@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
-import { DepositoMenorIgualZeroException } from './exceptions/DepositoMenorIgualZero.exception'
 import { isEmpty, isNumber, isPositive, maxDate, isDate, isString, isEnum, min } from 'class-validator'
 import { MovimentacaoFinanceiraException } from './exceptions/MovimentacaoFinanceira.exception'
+import { TipoMovimetacaoInvalidoException } from './exceptions/TipoMovimetacaoInvalido.exception'
 
 export enum TIPO_MOVIMENTACAO {
     TRANSFERENCIA = 'TRANSFERENCIA',
@@ -186,14 +186,8 @@ export class MovimentacaoFinanceira {
         }
     }
 
-    public validarValorMovimentacao(): boolean {
-        try {
-            if (this.valor <= 0) {
-                throw new DepositoMenorIgualZeroException('O depósito deve ser um valor maior que 0')
-            }
-            return true
-        } catch (e) {
-            throw e
-        }
+    public validarTipoMovimentacao(tipoMovimentacao: TIPO_MOVIMENTACAO): void {
+        if(this.tipoMovimentacao != tipoMovimentacao)
+            throw new TipoMovimetacaoInvalidoException("O tipo do processo efetuado em conta é diferente da movimentação enviada")
     }
 }

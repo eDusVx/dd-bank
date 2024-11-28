@@ -164,10 +164,11 @@ export class Conta {
         try {
             this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
-            movimentacao.validarValorMovimentacao()
+            movimentacao.validarTipoMovimentacao(TIPO_MOVIMENTACAO.DEPOSITO)
+
             const novoSaldo = this.saldo + movimentacao.getValor()
 
-            this.setSaldo(novoSaldo)
+            this.setSaldo(this.tratarValores(novoSaldo))
 
             this.movimentacaoFinanceira.push(movimentacao)
         } catch (e) {
@@ -179,7 +180,7 @@ export class Conta {
         try {
             this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
-            movimentacao.validarValorMovimentacao()
+            movimentacao.validarTipoMovimentacao(TIPO_MOVIMENTACAO.SAQUE)
 
             if (this.saldo < movimentacao.getValor()) {
                 throw new SaldoInsuficienteException(
@@ -189,7 +190,7 @@ export class Conta {
 
             const novoSaldo = this.saldo - movimentacao.getValor()
 
-            this.setSaldo(novoSaldo)
+            this.setSaldo(this.tratarValores(novoSaldo))
 
             this.movimentacaoFinanceira.push(movimentacao)
         } catch (e) {
@@ -200,9 +201,10 @@ export class Conta {
     public efetuarTransferencia(movimentacao: MovimentacaoFinanceira): void {
         try {
             let novoSaldo: number
-            this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
-            movimentacao.validarValorMovimentacao()
+            movimentacao.validarTipoMovimentacao(TIPO_MOVIMENTACAO.TRANSFERENCIA)
+
+            this.validarStatusConta(movimentacao.getTipoMovimentacao())
 
             if (this.numeroConta == movimentacao.getNumeroContaOrigem()) {
                 if (this.saldo < movimentacao.getValor()) {
@@ -213,11 +215,9 @@ export class Conta {
                 novoSaldo = this.saldo - movimentacao.getValor()
             } else if (this.numeroConta == movimentacao.getNumeroContaDestino()) {
                 novoSaldo = this.saldo + movimentacao.getValor()
-            } else {
-                throw new SaldoInsuficienteException('A conta não está associada à transferencia atual')
             }
 
-            this.setSaldo(novoSaldo)
+            this.setSaldo(this.tratarValores(novoSaldo))
 
             this.movimentacaoFinanceira.push(movimentacao)
         } catch (e) {
@@ -231,5 +231,9 @@ export class Conta {
                 `A conta de número ${this.numeroConta} precisa estar com status ${STATUS_CONTA.ATIVA} para efetuar a operação ${tipoMovimentacao}`,
             )
         }
+    }
+
+    private tratarValores(valor: number): number {
+        return parseFloat(valor.toFixed(2))
     }
 }
