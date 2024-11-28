@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "994373a0-1412-42a3-95d6-185f77eb49a0",
+		"name": "DD-BANK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25996000"
+	},
+	"item": [
+		{
+			"name": "CORE",
+			"item": [
+				{
+					"name": "CLIENTES",
+					"item": [
+						{
+							"name": "cadastrarCliente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Eduardo Xavier\",\r\n    \"cpf\": \"00000000000\",\r\n    \"dataNascimento\": \"2000-05-12\",\r\n    \"senha\": \"Teste*3030\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/clientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"clientes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscarCliente",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/clientes/00000000000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"clientes",
+										"00000000000"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"00000000000\",\r\n    \"senha\": \"Teste*3030\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/clientes/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"clientes",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CONTAS",
+					"item": [
+						{
+							"name": "criarConta",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"clienteId\": \"00000000000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/contas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"contas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "atualizarStatusConta",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ATIVA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/contas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"contas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscarContas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/contas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"contas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "MOVIMENTACOES",
+					"item": [
+						{
+							"name": "efetuarDeposito",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 1000.55,\r\n    \"numeroContaDestino\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/movimentacoes/deposito",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"movimentacoes",
+										"deposito"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "efetuarTransferencia",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 500,\r\n    \"numeroContaOrigem\": 1,\r\n    \"numeroContaDestino\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/movimentacoes/transferencia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"movimentacoes",
+										"transferencia"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "efetuarSaque",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 100,\r\n    \"numeroContaOrigem\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/dd-bank/movimentacoes/saque",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dd-bank",
+										"movimentacoes",
+										"saque"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "hello",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/dd-bank/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dd-bank",
+								"hello"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcGYiOiIwMDAwMDAwMDAwMCIsImlhdCI6MTczMjgyNjAwMSwiZXhwIjoxNzMyODI5NjAxfQ.iRcnuFQ-cixxlw2c2sXZbAU1tkfpLyeAkrdv8JEWLmk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
