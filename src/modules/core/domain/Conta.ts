@@ -47,6 +47,7 @@ export class Conta {
             instance.setSaldo(0)
             instance.setStatus(STATUS_CONTA.ATIVA)
             instance.setClienteId(props.clienteId)
+            instance.setMovimentacaoFinanceira([])
         } catch (e) {
             throw e
         }
