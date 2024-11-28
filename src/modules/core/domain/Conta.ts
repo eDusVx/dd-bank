@@ -42,6 +42,12 @@ export class Conta {
     }
 
     public static criar(props: CriarContaProps): Conta {
+        if (isEmpty(props.numeroConta)) throw new ContaException('O id da conta não pode ser nulo')
+
+        if (isNegative(props.numeroConta)) throw new ContaException('O id da conta não pode ser negativo')
+
+        if (!isNumber(props.numeroConta)) throw new ContaException('O id da conta tem que ser um numero')
+
         const instance = new Conta(props.numeroConta)
         try {
             instance.setSaldo(0)

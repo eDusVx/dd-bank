@@ -139,7 +139,7 @@ export class ClientesController {
             statusCode: 404,
         },
     })
-    async buscarClientes(@Param('id') id: string): Promise<ClienteDto | ClienteDto[]> {
+    async buscarClientes(@Param('id') id: string): Promise<ClienteDto> {
         try {
             const response = await this.buscarClientesQuery.execute(id)
 

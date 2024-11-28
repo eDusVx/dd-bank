@@ -9,7 +9,7 @@ export class BuscarContasQuery {
         private readonly contaRepository: ContaRepository,
     ) {}
 
-    async execute(request: number): Promise<ContaDto | ContaDto[]> {
+    async execute(request: number): Promise<ContaDto> {
         try {
             if (!request) throw new DadosNaoInformadosException('O numero da conta deve ser informado')
 

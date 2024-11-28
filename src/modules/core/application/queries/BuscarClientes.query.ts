@@ -9,7 +9,7 @@ export class BuscarClientesQuery {
         private readonly clienteRepository: ClienteRepository,
     ) {}
 
-    async execute(request: string): Promise<ClienteDto | ClienteDto[]> {
+    async execute(request: string): Promise<ClienteDto> {
         try {
             if (!request) throw new DadosNaoInformadosException('O cpf do cliente deve ser informado')
 

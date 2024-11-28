@@ -124,7 +124,7 @@ export class ContasController {
             statusCode: 404,
         },
     })
-    async buscarContas(@Param('id') id: number): Promise<ContaDto | ContaDto[]> {
+    async buscarContas(@Param('id') id: number): Promise<ContaDto> {
         try {
             const response = await this.buscarContasQuery.execute(id)
 
