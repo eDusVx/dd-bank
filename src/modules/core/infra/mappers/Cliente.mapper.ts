@@ -41,7 +41,7 @@ export class ClienteMapper {
     }
 
     public domainToModel(domain: Cliente): ClienteModel {
-        const model = new ClienteModel({
+        const model = ClienteModel.build({
             cpf: domain.getCpf(),
             nome: domain.getNome(),
             dataNascimento: domain.getDataNascimento(),

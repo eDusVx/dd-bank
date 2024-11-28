@@ -84,7 +84,7 @@ export class ContaMapper {
                     conta.getMovimentacaoFinanceira(),
                 )
             }
-            const contaModel = new ContaBancariaModel({
+            const contaModel = ContaBancariaModel.build({
                 numeroConta: conta.getNumeroConta(),
                 saldo: conta.getSaldo(),
                 status: conta.getStatus(),
