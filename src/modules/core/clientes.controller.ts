@@ -23,6 +23,46 @@ export class ClientesController {
         private readonly efetuarLoginClienteUseCase: EfetuarLoginClienteUseCase,
     ) {}
 
+    @ApiOperation({ summary: 'Efetua o login de um cliente no sistema' })
+    @ApiCreatedResponse({
+        description: 'Retorno esperado do endpoint em caso de sucesso',
+        example: {
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcGYiOiIwMDAwMDAwMDAwMSIsImlhdCI6MTczMjc2MjA5OCwiZXhwIjoxNzMyNzYyMTU4fQ.bCXnA97huBcL9HvYSFNMuBWn7Kp1soUQyWr6XtJp1Ak',
+        },
+    })
+    @ApiUnprocessableEntityResponse({
+        description: 'Retorno esperado do endpoint em caso de dados inválidos',
+        content: {
+            'application/json': {
+                examples: {
+                    cpfNulo: {
+                        summary: 'CPF Nulo',
+                        value: {
+                            message: 'O parâmetro cpf deve ser informado',
+                            error: 'DadosNaoInformadosException',
+                            statusCode: 400,
+                        },
+                    },
+                    senhaInvalida: {
+                        summary: 'Senha não atende os requisitos',
+                        value: {
+                            message: 'A senha deve conter pelo menos um caractere especial (@, $, !, %, *, ?, &, #).',
+                            error: 'ClienteException',
+                            statusCode: 422,
+                        },
+                    },
+                },
+            },
+        },
+    })
+    @ApiNotFoundResponse({
+        description: 'Retorno esperado do endpoint no caso de não existir um cliente a ser logado',
+        example: {
+            message: 'Nenhum cliente com cpf 00000000001111 foi encontrado',
+            error: 'ClienteNaoEcontradoException',
+            statusCode: 404,
+        },
+    })
     @Post('login')
     async login(@Body() request: LogarClienteRequest) {
         try {
