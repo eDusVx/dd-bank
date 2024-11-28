@@ -15,12 +15,103 @@ describe('Conta', () => {
             expect(conta.getStatus()).toBe(STATUS_CONTA.ATIVA)
             expect(conta.getClienteId()).toBe('12345678901')
             expect(conta.getNumeroConta()).toBe(12345)
+            expect(conta.getMovimentacaoFinanceira().length).toBe(0)
         })
 
-        it('deve lançar erro se o clienteId for inválido', () => {
-            const props = { clienteId: 'invalidCpf', numeroConta: 12345 }
+        it('deve retornar corretamente o dto de conta', () => {
+            const movimentacao = MovimentacaoFinanceira.criar({
+                valor: 100,
+                data: new Date(),
+                tipoMovimentacao: TIPO_MOVIMENTACAO.DEPOSITO,
+                numeroContaDestino: 12345,
+            })
+            const props = {
+                clienteId: '12345678901',
+                saldo: 100,
+                status: STATUS_CONTA.ATIVA,
+                movimentacaoFinanceira: [movimentacao],
+            }
+            const conta = Conta.carregar(props, 12345)
+
+            expect(conta.toDTO()).toStrictEqual({
+                clienteId: '12345678901',
+                movimentacaoFinanceira: [
+                    {
+                        id: movimentacao.getId(),
+                        valor: 100,
+                        data: movimentacao.getData(),
+                        tipoMovimentacao: movimentacao.getTipoMovimentacao(),
+                        numeroContaDestino: movimentacao.getNumeroContaDestino(),
+                        numeroContaOrigem: movimentacao.getNumeroContaOrigem(),
+                    },
+                ],
+                numeroConta: 12345,
+                saldo: 100,
+                status: 'ATIVA',
+            })
+        })
+    })
+
+    describe('carregamento de uma conta', () => {
+        it('deve carregar uma conta corretamente', () => {
+            const props = {
+                clienteId: '12345678901',
+                status: STATUS_CONTA.ATIVA,
+                saldo: 0,
+                movimentacaoFinanceira: [],
+            }
+            const conta = Conta.carregar(props, 1)
+
+            expect(conta.getSaldo()).toBe(0)
+            expect(conta.getStatus()).toBe(STATUS_CONTA.ATIVA)
+            expect(conta.getClienteId()).toBe('12345678901')
+            expect(conta.getNumeroConta()).toBe(1)
+            expect(conta.getMovimentacaoFinanceira().length).toBe(0)
+        })
+
+        it('deve retornar erro ao carregar uma conta com array de movimentacoes nulo', () => {
+            const props = {
+                clienteId: '12345678901',
+                status: STATUS_CONTA.ATIVA,
+                saldo: 0,
+                movimentacaoFinanceira: null,
+            }
+
+            expect(() => Conta.carregar(props, 1)).toThrow(ContaException)
+        })
+
+        it('deve retornar erro ao carregar uma conta com array de movimentacoes invalido', () => {
+            const props = {
+                clienteId: '12345678901',
+                status: STATUS_CONTA.ATIVA,
+                saldo: 0,
+                movimentacaoFinanceira: '1',
+            }
+
+            expect(() => Conta.carregar(props as any, 1)).toThrow(ContaException)
+        })
+    })
+
+    describe('clienteID', () => {
+        it('deve lançar erro se o clienteId tiver menos de 11 dígitos', () => {
+            const props = { clienteId: '12345', numeroConta: 12345 }
 
             expect(() => Conta.criar(props)).toThrow(ContaException)
+        })
+
+        it('deve lançar erro se o clienteId não for um CPF válido', () => {
+            const props = { clienteId: '12345678A90', numeroConta: 12345 }
+
+            expect(() => Conta.criar(props)).toThrow(ContaException)
+        })
+    })
+
+    describe('status', () => {
+        it('deve lançar erro se o status for inválido', () => {
+            const props = { clienteId: '12345678901', numeroConta: 12345 }
+            const conta = Conta.criar(props)
+
+            expect(() => conta.atualizarStatus('INVALIDO' as any)).toThrow(ContaException)
         })
     })
 
@@ -145,7 +236,6 @@ describe('Conta', () => {
             })
             contaOrigem.efetuarTransferencia(transferencia)
             contaDestino.efetuarTransferencia(transferencia)
-
 
             expect(contaOrigem.getSaldo()).toBe(0)
             expect(contaDestino.getSaldo()).toBe(200)
