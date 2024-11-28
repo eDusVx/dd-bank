@@ -273,21 +273,25 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 ## Endpoints
 
+### Após subir a aplicação o basepath padrão da aplicação será:
+
+`http://localhost:{APP_PORT}/dd-bank`
+
 ### **Clientes**
 
 - **Atributos**: Nome completo, CPF (único e validado), Data de Nascimento.
 - **Endpoints**:
-    - `POST /clientes`: Criação de cliente.
-    - `GET /clientes/:id`: Obter informações detalhadas de um cliente, incluindo contas associadas.
-    - `POST /clientes/login`: Efetuar login de um cliente
+    - `POST {BASEPATH}/clientes`: Criação de cliente.
+    - `GET {BASEPATH}/clientes/:id`: Obter informações detalhadas de um cliente, incluindo contas associadas.
+    - `POST {BASEPATH}/clientes/login`: Efetuar login de um cliente
 
 ### **Contas Bancárias**
 
 - **Atributos**: Número da conta (gerado automaticamente), saldo inicial (padrão: zero), status (ativa/inativa).
 - **Endpoints**:
-    - `POST /contas`: Criar conta vinculada a um cliente.
-    - `PATCH /contas/:id`: Atualizar status (ativa/inativa).
-    - `GET /contas/:id`: Obter informações detalhadas, incluindo movimentações.
+    - `POST {BASEPATH}/contas`: Criar conta vinculada a um cliente.
+    - `PATCH {BASEPATH}/contas/:id`: Atualizar status (ativa/inativa).
+    - `GET {BASEPATH}/contas/:id`: Obter informações detalhadas, incluindo movimentações.
 
 ### **Movimentações Financeiras**
 
@@ -297,9 +301,9 @@ npm run test:cov     # Executa os testes com cobertura de código
     - Transferências são permitidas apenas entre contas ativas.
     - Registro detalhado de cada movimentação (data/hora, tipo, valor, contas envolvidas).
 - **Endpoints**:
-    - `POST /movimentacoes/deposito`: Realizar depósito.
-    - `POST /movimentacoes/saque`: Realizar saque.
-    - `POST /movimentacoes/transferencia`: Realizar transferência.
+    - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
+    - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
+    - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
 
 ## **Documentação via swagger**
 
