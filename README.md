@@ -1,19 +1,23 @@
 # Simulador de Sistema Bancário - NestJS
 
-## Índice
-
 - [Descrição do Projeto](#descrição-do-projeto)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Estruturação do Domínio](#estruturação-do-domínio)
+    - [Entidades](#entidades)
+    - [Agregado](#agregado)
 - [Estruturação de Tabelas no Banco](#estruturação-de-tabelas-em-banco)
+    - [cliente](#cliente)
+    - [conta_bancaria](#conta_bancaria)
+    - [log](#log)
 - [Instruções de Instalação e Execução](#instruções-de-instalação-e-execução)
     - [Pré-requisitos](#pré-requisitos)
-    - [Instalação Nativa](#opção-1-passos-para-instalação-nativamente)
-    - [Instalação com Docker](#opção-2-passos-para-instalação-via-docker)
+    - [Nativamente](#opção-1-nativamente)
+    - [Docker](#opção-1-docker)
 - [Funcionalidades](#funcionalidades)
     - [Testes unitários](#testes-unitários)
     - [Documentação via swagger](#documentação-via-swagger)
     - [Endpoints](#endpoints)
+    - [Postman Collection](#postman-collection)
 
 # Descrição do Projeto
 
@@ -25,22 +29,22 @@ Esta aplicação é um backend desenvolvido em [NestJS](https://nestjs.com/) que
 
 O projeto segue uma organização baseada em camadas usando **Domain Driven Design**, **Clean Architecture** e aplicando princípios **S.O.L.I.D**:
 
-### **Domínio**
+**Domínio**
 
-- **Entidades**: Modelagem dos objetos principais do sistema (ex.: Cliente, ContaBancaria).
-- **Agregados**: A ContaBancaria encapsula todas as movimentações financeiras relacionadas.
-- **Serviços de Domínio**: Regras como "não permitir saldo negativo" e "transferência entre contas ativas" são aplicadas aqui.
-- **Repositórios (interfaces)**: Definem contratos para manipulação de dados.
+- Entidades: Modelagem dos objetos principais do sistema (ex.: Cliente, ContaBancaria).
+- Agregados: A ContaBancaria encapsula todas as movimentações financeiras relacionadas.
+- Serviços de Domínio: Regras como "não permitir saldo negativo" e "transferência entre contas ativas" são aplicadas aqui.
+- Repositórios (interfaces): Definem contratos para manipulação de dados.
 
-### **Aplicação**
+**Aplicação**
 
-- **Casos de Uso**: Implementação dos serviços de aplicação que orquestram as ações do sistema, como criação de cliente ou realização de movimentações.
+- Casos de Uso: Implementação dos serviços de aplicação que orquestram as ações do sistema, como criação de cliente ou realização de movimentações.
 
-### **Infraestrutura**
+**Infraestrutura**
 
-- **Banco de Dados**: Implementação dos repositórios utilizando o ORM Sequelize com um banco relacional (PostgreSQL/MySQL).
-- **Controladores**: Definem os endpoints da API e direcionam as requisições para os casos de uso.
-- **Comunicação Externa**: Configuração para integrações externas, se necessário.
+- Banco de Dados: Implementação dos repositórios utilizando o ORM Sequelize com um banco relacional (PostgreSQL/MySQL).
+- Controladores: Definem os endpoints da API e direcionam as requisições para os casos de uso.
+- Comunicação Externa: Configuração para integrações externas, se necessário.
 
 ---
 
@@ -252,7 +256,7 @@ npm run start:dev
 
 **A aplicação subirá no endereço** `http://localhost:{APP_PORT}/dd-bank`
 
-## Opção 2: **Passos para Instalação Via Docker**
+## Opção 2: **Docker**
 
 ### Passo 1: Clonar o repositório
 
@@ -335,7 +339,7 @@ npm run test:cov     # Executa os testes com cobertura de código
     - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
     - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
 
-## Postman Collection:
+## Postman Collection
 
 **Se preferir pode baixar e importar a coleção do Postman com os exemplos**
 [![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
