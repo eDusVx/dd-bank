@@ -15,13 +15,15 @@ export class EfetuarTransferenciaUseCase {
     ) {}
     async execute(request: EfeturarTransferenciaRequest): Promise<MovimentacaoFinanceiraDto> {
         try {
-            const contaOrigemSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
+            const contaOrigemTransferencia = await this.contaRepository.buscarContaPorNumero(request.numeroContaOrigem)
 
-            contaOrigemSaque.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
+            contaOrigemTransferencia.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
 
-            const contaDestinoSaque = await this.contaRepository.buscarContaPorNumero(request.numeroContaDestino)
+            const contaDestinoTransferencia = await this.contaRepository.buscarContaPorNumero(
+                request.numeroContaDestino,
+            )
 
-            contaDestinoSaque.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
+            contaDestinoTransferencia.validarStatusConta(TIPO_MOVIMENTACAO.TRANSFERENCIA)
 
             const transferencia = MovimentacaoFinanceira.criar({
                 valor: request.valor,
@@ -31,11 +33,11 @@ export class EfetuarTransferenciaUseCase {
                 numeroContaDestino: request.numeroContaDestino,
             })
 
-            contaOrigemSaque.efetuarTransferencia(transferencia)
+            contaOrigemTransferencia.efetuarTransferencia(transferencia)
 
-            contaDestinoSaque.efetuarTransferencia(transferencia)
+            contaDestinoTransferencia.efetuarTransferencia(transferencia)
 
-            await this.contaRepository.salvarContas([contaDestinoSaque, contaOrigemSaque])
+            await this.contaRepository.salvarContas([contaDestinoTransferencia, contaOrigemTransferencia])
 
             return transferencia.toDTO()
         } catch (e) {
