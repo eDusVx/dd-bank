@@ -1,4 +1,5 @@
 import { DataType, PrimaryKey, Table, Model, Column } from 'sequelize-typescript'
+import { LOG_TYPE } from '../repositories/Log.repository'
 
 @Table({
     tableName: 'log',
@@ -6,10 +7,10 @@ import { DataType, PrimaryKey, Table, Model, Column } from 'sequelize-typescript
 export class LogModel extends Model {
     @PrimaryKey
     @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, allowNull: false })
-    id: number
+    id: string
 
     @Column({
-        type: DataType.TEXT,
+        type: DataType.STRING,
         allowNull: false,
     })
     process: string
@@ -33,8 +34,8 @@ export class LogModel extends Model {
     result: string
 
     @Column({
-        type: DataType.TEXT,
+        type: DataType.ENUM(...Object.values(LOG_TYPE)),
         allowNull: false,
     })
-    type: string
+    type: LOG_TYPE
 }

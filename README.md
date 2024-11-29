@@ -137,6 +137,7 @@ A tabela `cliente` armazena informações relacionadas aos clientes do sistema, 
 - **senha**: Senha criptografada do cliente.
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
+
 ---
 
 ### Tabela **conta_bancaria**
@@ -167,16 +168,16 @@ A tabela `conta_bancaria` armazena informações sobre as contas bancárias dos 
 
 A tabela `log` armazena os logs de todas as execuções de endpoints da aplicação, registrando os parâmetros de entrada, saida e erros caso existam. Essa tabela pode ser utilizada para ter um controle de todos os processos executados no sistema, incluindo as movimentações entre contas, retornando as props da movimentação e o resultado da execução.
 
-| Coluna               | Tipo                       | Propriedades                          |
-| -------------------- | -------------------------- | ------------------------------------- |
-| `id`                 | `UUID`                     | PK, Not Null                          |
-| `process`            | `VARCHAR(255)`             | Not Null                              |
-| `log`                | `VARCHAR(255)`             | Not Null                              |
-| `props`              | `VARCHAR(255)`             | Not Null                              |
-| `result`             | `VARCHAR(255)`             | Not Null                              |
-| `type`               | `string`                   | Timestamps, Automático                |
-| `created_at`         | `TIMESTAMP`                | Timestamps, Automático                |
-| `updated_at`         | `TIMESTAMP`                | Timestamps, Automático                |
+| Coluna       | Tipo                                   | Propriedades           |
+| ------------ | -------------------------------------- | ---------------------- |
+| `id`         | `UUID`                                 | PK, Not Null           |
+| `process`    | `VARCHAR(255)`                         | Not Null               |
+| `log`        | `TEXT`                                 | Not Null               |
+| `props`      | `TEXT`                                 | Not Null               |
+| `result`     | `TEXT`                                 | Null                   |
+| `type`       | `ENUM('ERROR','LOG','WARN','SUCCESS')` | Not Null               |
+| `created_at` | `TIMESTAMP`                            | Timestamps, Automático |
+| `updated_at` | `TIMESTAMP`                            | Timestamps, Automático |
 
 #### Descrição
 
@@ -185,10 +186,10 @@ A tabela `log` armazena os logs de todas as execuções de endpoints da aplicaç
 - **log**: Log retornado do processo, execução com sucesso ou falha.
 - **props**: Parâmetros de entrada do processo.
 - **result**: Resultado do processo, podendo ser também um erro retornado.
-- **type**: Tipo do log(error,log,warn...).
+- **type**: Tipo do log.
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
-  
+
 ---
 
 # Instruções de Instalação e Execução
@@ -310,7 +311,6 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 [![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
 
-
 ### **Clientes**
 
 - **Atributos**: Nome completo, CPF (único e validado), Data de Nascimento.
@@ -338,4 +338,5 @@ npm run test:cov     # Executa os testes com cobertura de código
     - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
     - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
     - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
+
 ---

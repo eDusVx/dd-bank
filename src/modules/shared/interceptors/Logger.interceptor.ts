@@ -29,12 +29,16 @@ export class LoggerInterceptor implements NestInterceptor {
             Object.assign(params, request.body)
         }
 
+        if (process.toLowerCase() === 'login' && params.senha) {
+            params.senha = '[REDACTED]'
+        }
+
         const props = JSON.stringify(params)
 
         this.logger.debug(`Iniciando execução de ${handlerName} com parâmetros: ${props}`)
         this.logService.log({
             process,
-            log: `O processo ${handlerName} foi iniciado com os parâmetros: ${props}`,
+            log: `O processo ${handlerName} foi iniciado`,
             props,
         })
 
@@ -42,7 +46,7 @@ export class LoggerInterceptor implements NestInterceptor {
             tap((response) => {
                 const result = JSON.stringify(response)
                 this.logger.debug(`${handlerName} executado com sucesso com parâmetros: ${props}`)
-                this.logService.log({
+                this.logService.success({
                     process,
                     log: `O processo ${handlerName} foi finalizado com sucesso`,
                     props,
