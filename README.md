@@ -12,12 +12,14 @@
 - [Instruções de Instalação e Execução](#instruções-de-instalação-e-execução)
     - [Pré-requisitos](#pré-requisitos)
     - [Nativamente](#opção-1-nativamente)
-    - [Docker](#opção-1-docker)
+    - [Docker](#opção-2-docker)
 - [Funcionalidades](#funcionalidades)
     - [Testes unitários](#testes-unitários)
     - [Documentação via swagger](#documentação-via-swagger)
     - [Endpoints](#endpoints)
     - [Postman Collection](#postman-collection)
+
+---
 
 # Descrição do Projeto
 
@@ -152,8 +154,6 @@ A tabela `cliente` armazena informações relacionadas aos clientes do sistema, 
 - **senha**: Senha criptografada do cliente.
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
-
----
 
 ### **conta_bancaria**
 
@@ -313,35 +313,234 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 **Clientes**
 
-- Atributos: Nome completo, CPF (único e validado), Data de Nascimento.
-- Endpoints:
-    - `POST {BASEPATH}/clientes`: Criação de cliente.
-    - `GET {BASEPATH}/clientes/:id`: Obter informações detalhadas de um cliente, incluindo contas associadas.
-    - `POST {BASEPATH}/clientes/login`: Efetuar login de um cliente
+- `POST {BASEPATH}/clientes`: Criação de cliente.
+
+_Request_
+
+```json
+{
+    "nome": "Eduardo Xavier",
+    "cpf": "00000000000",
+    "dataNascimento": "2000-05-12",
+    "senha": "Teste*3030"
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "cpf": "00000000000",
+    "nome": "Eduardo Xavier",
+    "dataNascimento": "2000-05-12T00:00:00.000Z",
+    "contas": []
+}
+```
+
+- `POST {BASEPATH}/clientes/login`: Efetuar login de um cliente
+
+_Request_
+
+```json
+{
+    "cpf": "00000000000",
+    "senha": "Teste*3030"
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcGYiOiIwMDAwMDAwMDAwMCIsImlhdCI6MTczMjg1NTcwMiwiZXhwIjoxNzMyODU5MzAyfQ.IPcKy3nULoaI5sgwfKcxcdZxGUfzF5EONwmvtc4FMko"
+}
+```
+
+- `GET {BASEPATH}/clientes/:id`: Obter informações detalhadas de um cliente, incluindo contas associadas.
+
+_Request_
+
+```bash
+{BASEPATH}/clientes/00000000000
+```
+
+_Response: 200_:
+
+```json
+{
+    "cpf": "00000000000",
+    "nome": "Eduardo Xavier",
+    "dataNascimento": "2000-05-12T00:00:00.000Z",
+    "contas": [2, 1]
+}
+```
 
 **Contas Bancárias**
 
-- Atributos: Número da conta (gerado automaticamente), saldo inicial (padrão: zero), status (ativa/inativa).
-- Endpoints:
-    - `POST {BASEPATH}/contas`: Criar conta vinculada a um cliente.
-    - `PATCH {BASEPATH}/contas/:id`: Atualizar status (ativa/inativa).
-    - `GET {BASEPATH}/contas/:id`: Obter informações detalhadas, incluindo movimentações.
+- `POST {BASEPATH}/contas`: Criar conta vinculada a um cliente.
+
+_Request_
+
+```json
+{
+    "clienteId": "00000000000"
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "numeroConta": 1,
+    "saldo": 0,
+    "status": "ATIVA",
+    "clienteId": "00000000000",
+    "movimentacaoFinanceira": []
+}
+```
+
+- `PATCH {BASEPATH}/contas/:id`: Atualizar status (ativa/inativa).
+
+_Request_
+
+```bash
+{BASEPATH}/contas/1
+```
+
+```json
+{
+    "status": "INATIVA"
+}
+```
+
+_Response: 200_:
+
+```json
+{
+    "numeroConta": 1,
+    "saldo": 0,
+    "status": "INATIVA",
+    "clienteId": "00000000000",
+    "movimentacaoFinanceira": []
+}
+```
+
+- `GET {BASEPATH}/contas/:id`: Obter informações detalhadas, incluindo movimentações.
+
+_Request_
+
+```bash
+{BASEPATH}/contas/1
+```
+
+_Response: 200_:
+
+```json
+{
+    "numeroConta": 1,
+    "saldo": 1000.55,
+    "status": "ATIVA",
+    "clienteId": "00000000000",
+    "movimentacaoFinanceira": [
+        {
+            "id": "362e47e4-df1d-484b-9181-43d9d258718d",
+            "valor": 1000.55,
+            "data": "2024-11-29T04:54:55.234Z",
+            "tipoMovimentacao": "DEPOSITO",
+            "numeroContaDestino": 1
+        },
+        {
+            "id": "b438f60c-89a2-4cd8-a80d-edaca661bfca",
+            "valor": 1000.55,
+            "data": "2024-11-29T04:54:57.655Z",
+            "tipoMovimentacao": "DEPOSITO",
+            "numeroContaDestino": 1
+        },
+        {
+            "id": "24deda3d-70dd-4d1b-b8d4-1aefa847ddf3",
+            "valor": 1000.55,
+            "data": "2024-11-29T04:55:08.732Z",
+            "tipoMovimentacao": "SAQUE",
+            "numeroContaOrigem": 1
+        }
+    ]
+}
+```
 
 **Movimentações Financeiras**
 
-- Tipos de Movimentação: Depósito, Saque, Transferência entre contas.
-- Regras de Negócio:
-    - Saldo da conta não pode ser negativo.
-    - Transferências são permitidas apenas entre contas ativas.
-    - Registro detalhado de cada movimentação (data/hora, tipo, valor, contas envolvidas).
-- Endpoints:
-    - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
-    - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
-    - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
+- `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
 
-## Postman Collection
+_Request_
+
+```json
+{
+    "valor": 1000.55,
+    "numeroContaDestino": 1
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "id": "b438f60c-89a2-4cd8-a80d-edaca661bfca",
+    "valor": 1000.55,
+    "data": "2024-11-29T04:54:57.655Z",
+    "tipoMovimentacao": "DEPOSITO",
+    "numeroContaDestino": 1
+}
+```
+
+- `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
+
+_Request_
+
+```json
+{
+    "valor": 100,
+    "numeroContaOrigem": 1
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "id": "e311e4eb-0c89-40cb-97a6-4e3502f34e7b",
+    "valor": 100,
+    "data": "2024-11-29T04:56:46.383Z",
+    "tipoMovimentacao": "SAQUE",
+    "numeroContaOrigem": 1
+}
+```
+
+- `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
+
+_Request_
+
+```json
+{
+    "valor": 500,
+    "numeroContaOrigem": 1,
+    "numeroContaDestino": 2
+}
+```
+
+_Response: 201_:
+
+```json
+{
+    "id": "bf00f331-2235-4689-9e5e-59d9fc312644",
+    "valor": 500,
+    "data": "2024-11-29T04:57:15.712Z",
+    "tipoMovimentacao": "TRANSFERENCIA",
+    "numeroContaOrigem": 1,
+    "numeroContaDestino": 2
+}
+```
+
+# Postman Collection
 
 **Se preferir pode baixar e importar a coleção do Postman com os exemplos**
 [![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
-
----
