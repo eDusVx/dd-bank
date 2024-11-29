@@ -1,7 +1,5 @@
 # Simulador de Sistema Bancário - NestJS
 
----
-
 ## Índice
 
 - [Descrição do Projeto](#descrição-do-projeto)
