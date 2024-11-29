@@ -46,7 +46,7 @@ O projeto segue uma organização baseada em camadas usando **Domain Driven Desi
 
 # Estruturação do domínio
 
-### **Entidades**:
+### **Entidades**
 
 - **Cliente**: Representa o cliente no sistema, com informações pessoais e contas relacionadas.
 
@@ -91,7 +91,7 @@ O projeto segue uma organização baseada em camadas usando **Domain Driven Desi
     }
     ```
 
-### **Agregado**: A ContaBancaria encapsula todas as movimentações financeiras relacionadas.
+### **Agregado**
 
 - **Conta**: Representa a conta bancária do cliente, com informações sobre saldo, status e movimentações financeiras.
 
@@ -129,9 +129,7 @@ O projeto segue uma organização baseada em camadas usando **Domain Driven Desi
 
 Este documento descreve a estruturação das tabelas no banco de dados para o modelo de clientes e contas bancárias, com base no código fornecido.
 
-## Tabelas
-
-### Tabela **cliente**
+### **cliente**
 
 A tabela `cliente` armazena informações relacionadas aos clientes do sistema, incluindo dados pessoais como CPF, nome, data de nascimento e senha.
 
@@ -144,8 +142,6 @@ A tabela `cliente` armazena informações relacionadas aos clientes do sistema, 
 | `created_at`      | `TIMESTAMP`    | Timestamps, Automático |
 | `updated_at`      | `TIMESTAMP`    | Timestamps, Automático |
 
-#### Descrição
-
 - **cpf**: Identificador único do cliente no sistema (Chave Primária).
 - **nome**: Nome completo do cliente.
 - **data_nascimento**: Data de nascimento do cliente.
@@ -155,7 +151,7 @@ A tabela `cliente` armazena informações relacionadas aos clientes do sistema, 
 
 ---
 
-### Tabela **conta_bancaria**
+### **conta_bancaria**
 
 A tabela `conta_bancaria` armazena informações sobre as contas bancárias dos clientes, incluindo saldo, status e movimentações financeiras associadas.
 
@@ -169,8 +165,6 @@ A tabela `conta_bancaria` armazena informações sobre as contas bancárias dos 
 | `created_at`         | `TIMESTAMP`                | Timestamps, Automático                |
 | `updated_at`         | `TIMESTAMP`                | Timestamps, Automático                |
 
-#### Descrição
-
 - **numero_conta**: Identificador único da conta bancária (Chave Primária).
 - **cliente_id**: Referência ao cliente associado à conta bancária. Este campo é uma chave estrangeira que faz referência à coluna `cpf` da tabela `cliente`.
 - **saldo**: Saldo atual da conta bancária. Inicialmente é 0 e pode ser modificado com transações financeiras.
@@ -179,7 +173,7 @@ A tabela `conta_bancaria` armazena informações sobre as contas bancárias dos 
 - **created_at**: Data de criação do registro.
 - **updated_at**: Data da última atualização do registro.
 
-### Tabela **log**
+### **log**
 
 A tabela `log` armazena os logs de todas as execuções de endpoints da aplicação, registrando os parâmetros de entrada, saida e erros caso existam. Essa tabela pode ser utilizada para ter um controle de todos os processos executados no sistema, incluindo as movimentações entre contas, retornando as props da movimentação e o resultado da execução.
 
@@ -194,8 +188,6 @@ A tabela `log` armazena os logs de todas as execuções de endpoints da aplicaç
 | `created_at` | `TIMESTAMP`                            | Timestamps, Automático |
 | `updated_at` | `TIMESTAMP`                            | Timestamps, Automático |
 
-#### Descrição
-
 - **id**: Identificador único do log (Chave Primária).
 - **process**: Processo executado nesse log (buscarConta, efetuarDeposito, efetuarSaque...).
 - **log**: Log retornado do processo, execução com sucesso ou falha.
@@ -209,15 +201,14 @@ A tabela `log` armazena os logs de todas as execuções de endpoints da aplicaç
 
 # Instruções de Instalação e Execução
 
-### **Pré-requisitos**
+## **Pré-requisitos**
 
 - [Node.js](https://nodejs.org/) v18+
-- [Nest CLI](https://docs.nestjs.com/cli/overview) instalado globalmente.
-- Banco de dados relacional (PostgreSQL/MySQL).
+- Banco de dados relacional PostgreSQL/MySQL (Quando escolhido rodar nativamente).
 
-## Opção 1: **Passos para Instalação Nativamente**
+## Opção 1: **Nativamente**
 
-### OBS: Para subir nativamente é necessário de um banco postgreesql configurado previamente.
+**OBS**: Para subir nativamente é necessário de um banco postgreesql configurado previamente.
 
 ### Passo 1: Clonar o repositório
 
@@ -259,7 +250,7 @@ JWT_TOKEN='TOKEN' # Jwt token que deve ser gerado previamente e inserido aqui
 npm run start:dev
 ```
 
-### A aplicação subirá no endereço `http://localhost:{APP_PORT}/dd-bank`
+**A aplicação subirá no endereço** `http://localhost:{APP_PORT}/dd-bank`
 
 ## Opção 2: **Passos para Instalação Via Docker**
 
@@ -295,7 +286,7 @@ JWT_TOKEN='TOKEN' # Jwt token que deve ser gerado previamente e inserido aqui
 docker-compose up --build
 ```
 
-### A aplicação subirá no endereço `http://localhost:{APP_PORT}/dd-bank`
+**A aplicação subirá no endereço** `http://localhost:{APP_PORT}/dd-bank`
 
 ---
 
@@ -312,42 +303,41 @@ npm run test:cov     # Executa os testes com cobertura de código
 
 ## **Documentação via swagger**
 
-### Para acessar a documentação mais detalhada das rotas e tipos de retorno/entrada em cada rota acesse a documentação do swagger no endereço:
-
-`http://localhost:{APP_PORT}/dd-bank/docs`
+**Para acessar a documentação mais detalhada das rotas e tipos de retorno/entrada em cada rota acesse a documentação do swagger no endereço** `http://localhost:{APP_PORT}/dd-bank/docs`
 
 ## Endpoints
 
-### **Clientes**
+**Clientes**
 
-- **Atributos**: Nome completo, CPF (único e validado), Data de Nascimento.
-- **Endpoints**:
+- Atributos: Nome completo, CPF (único e validado), Data de Nascimento.
+- Endpoints:
     - `POST {BASEPATH}/clientes`: Criação de cliente.
     - `GET {BASEPATH}/clientes/:id`: Obter informações detalhadas de um cliente, incluindo contas associadas.
     - `POST {BASEPATH}/clientes/login`: Efetuar login de um cliente
 
-### **Contas Bancárias**
+**Contas Bancárias**
 
-- **Atributos**: Número da conta (gerado automaticamente), saldo inicial (padrão: zero), status (ativa/inativa).
-- **Endpoints**:
+- Atributos: Número da conta (gerado automaticamente), saldo inicial (padrão: zero), status (ativa/inativa).
+- Endpoints:
     - `POST {BASEPATH}/contas`: Criar conta vinculada a um cliente.
     - `PATCH {BASEPATH}/contas/:id`: Atualizar status (ativa/inativa).
     - `GET {BASEPATH}/contas/:id`: Obter informações detalhadas, incluindo movimentações.
 
-### **Movimentações Financeiras**
+**Movimentações Financeiras**
 
-- **Tipos de Movimentação**: Depósito, Saque, Transferência entre contas.
-- **Regras de Negócio**:
+- Tipos de Movimentação: Depósito, Saque, Transferência entre contas.
+- Regras de Negócio:
     - Saldo da conta não pode ser negativo.
     - Transferências são permitidas apenas entre contas ativas.
     - Registro detalhado de cada movimentação (data/hora, tipo, valor, contas envolvidas).
-- **Endpoints**:
+- Endpoints:
     - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
     - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
     - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
 
-### Se preferir pode baixar e importar a coleção do Postman com os exemplos:
+## Postman Collection:
 
+**Se preferir pode baixar e importar a coleção do Postman com os exemplos**
 [![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
 
 ---
