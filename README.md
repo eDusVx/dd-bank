@@ -200,7 +200,9 @@ A tabela `log` armazena os logs de todas as execuções de endpoints da aplicaç
 - [Nest CLI](https://docs.nestjs.com/cli/overview) instalado globalmente.
 - Banco de dados relacional (PostgreSQL/MySQL).
 
-## **Passos para Instalação Nativamente**
+## Opção 1: **Passos para Instalação Nativamente**
+
+### OBS: Para subir nativamente é necessário de um banco postgreesql configurado previamente.
 
 ### Passo 1: Clonar o repositório
 
@@ -244,7 +246,7 @@ npm run start:dev
 
 ### A aplicação subirá no endereço `http://localhost:{APP_PORT}/dd-bank`
 
-## **Passos para Instalação Via Docker**
+## Opção 2: **Passos para Instalação Via Docker**
 
 ### Passo 1: Clonar o repositório
 
