@@ -1,5 +1,22 @@
 # Simulador de Sistema Bancário - NestJS
 
+---
+
+## Índice
+
+- [Descrição do Projeto](#descrição-do-projeto)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Estruturação do Domínio](#estruturação-do-domínio)
+- [Estruturação de Tabelas no Banco](#estruturação-de-tabelas-em-banco)
+- [Instruções de Instalação e Execução](#instruções-de-instalação-e-execução)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Instalação Nativa](#opção-1-passos-para-instalação-nativamente)
+    - [Instalação com Docker](#opção-2-passos-para-instalação-via-docker)
+- [Funcionalidades](#funcionalidades)
+    - [Testes unitários](#testes-unitários)
+    - [Documentação via swagger](#documentação-via-swagger)
+    - [Endpoints](#endpoints)
+
 # Descrição do Projeto
 
 Esta aplicação é um backend desenvolvido em [NestJS](https://nestjs.com/) que simula o funcionamento de um sistema bancário, aplicando conceitos de **Domain-Driven Design (DDD)**. O sistema gerencia clientes, contas bancárias e movimentações financeiras, oferecendo uma arquitetura modular, escalável e orientada ao domínio do problema.
@@ -295,23 +312,13 @@ npm run test         # Executa os testes unitários
 npm run test:cov     # Executa os testes com cobertura de código
 ```
 
-## Endpoints
-
-### Após subir a aplicação o basepath padrão da aplicação será:
-
-`http://localhost:{APP_PORT}/dd-bank`
-
 ## **Documentação via swagger**
 
 ### Para acessar a documentação mais detalhada das rotas e tipos de retorno/entrada em cada rota acesse a documentação do swagger no endereço:
 
 `http://localhost:{APP_PORT}/dd-bank/docs`
 
-## Postman Collection
-
-### Se preferir importar a coleção do Postman com os exemplos, basta baixar e importar no endereço:
-
-[![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
+## Endpoints
 
 ### **Clientes**
 
@@ -340,5 +347,9 @@ npm run test:cov     # Executa os testes com cobertura de código
     - `POST {BASEPATH}/movimentacoes/deposito`: Realizar depósito.
     - `POST {BASEPATH}/movimentacoes/saque`: Realizar saque.
     - `POST {BASEPATH}/movimentacoes/transferencia`: Realizar transferência.
+
+### Se preferir pode baixar e importar a coleção do Postman com os exemplos:
+
+[![Baixar coleção do Postman](https://img.shields.io/badge/Download-Postman%20Collection-blue)](https://downgit.github.io/#/home?url=https://github.com/eDusVx/dd-bank/blob/main/postman/collection.json)
 
 ---
