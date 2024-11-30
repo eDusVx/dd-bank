@@ -7,6 +7,7 @@ import { StatusContaInvalidoEception } from '../../domain/exceptions/StatusConta
 import { EfetuarTransferenciaUseCase } from './EfetuarTransferencia.usecase'
 import { Conta, STATUS_CONTA } from '../../domain/Conta'
 import { SaldoInsuficienteException } from '../../domain/exceptions/SaldoInsuficiente.exception'
+import { MesmaContaTransferenciaException } from '../../domain/exceptions/MesmaContaTransferencia.exception'
 
 const mockContaRepository = {
     buscarContaPorNumero: jest.fn(),
@@ -61,6 +62,31 @@ describe('EfetuarTransferenciaUseCase', () => {
         expect(result.numeroContaDestino).toEqual(2)
         expect(contaOrigemMock.getSaldo()).toEqual(0)
         expect(contaDestinoMock.getSaldo()).toEqual(1000)
+    })
+
+    it('deve retornar erro ao tentarefetuar uma transferencia para a mesma conta', async () => {
+        const request: EfeturarTransferenciaRequest = {
+            numeroContaOrigem: 1,
+            numeroContaDestino: 1,
+            valor: 500,
+        }
+
+        const props = {
+            clienteId: '12345678901',
+            status: STATUS_CONTA.ATIVA,
+            saldo: 500,
+            movimentacaoFinanceira: [],
+        }
+
+        const contaOrigemMock = Conta.carregar(props, 1)
+
+        mockContaRepository.buscarContaPorNumero
+            .mockResolvedValueOnce(contaOrigemMock)
+            .mockResolvedValueOnce(contaOrigemMock)
+
+        mockContaRepository.salvarContas.mockResolvedValue(undefined)
+
+        await expect(useCase.execute(request)).rejects.toThrow(MesmaContaTransferenciaException)
     })
 
     it('deve lançar erro se a conta de origem não tiver saldo suficiente para a transferência', async () => {
