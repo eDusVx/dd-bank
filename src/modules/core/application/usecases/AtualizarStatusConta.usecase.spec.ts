@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ContaRepository } from '../../domain/repositories/Conta.repository'
-import { STATUS_CONTA } from '../../domain/Conta'
+import { Conta, STATUS_CONTA } from '../../domain/Conta'
 import { AtualizarStatusContaUseCase } from './AualizarStatusConta.usecase'
 import { ContaNaoEncontradaException } from '../../domain/exceptions/ContaNaoEncontrada.exception'
+import { MesmoStatusContaException } from '../../domain/exceptions/MesmoStatusConta.exception'
 
 const mockContaRepository = {
     buscarContaPorNumero: jest.fn(),
@@ -50,6 +51,22 @@ describe('AtualizarStatusContaUseCase', () => {
             saldo: 100,
             status: STATUS_CONTA.ATIVA,
         })
+    })
+
+    it('deve retornar erro ao tentar atualizar para o mesmo status da conta', async () => {
+        const request = { numeroConta: 12345, status: STATUS_CONTA.ATIVA }
+        const props = {
+            clienteId: '12345678901',
+            saldo: 100,
+            status: STATUS_CONTA.ATIVA,
+            movimentacaoFinanceira: [],
+        }
+        const conta = Conta.carregar(props, 12345)
+
+        mockContaRepository.buscarContaPorNumero.mockResolvedValue(conta)
+        mockContaRepository.salvarConta.mockResolvedValue(undefined)
+
+        await expect(useCase.execute(request)).rejects.toThrow(MesmoStatusContaException)
     })
 
     it('deve lançar erro se a conta não for encontrada', async () => {
