@@ -207,7 +207,7 @@ A tabela `log` armazena os logs de todas as execuções de endpoints da aplicaç
 
 ## **Pré-requisitos**
 
-- [Node.js](https://nodejs.org/) v18+
+- [Node.js](https://nodejs.org/) v18+ (Quando escolhido rodar nativamente)
 - Banco de dados relacional PostgreSQL/MySQL (Quando escolhido rodar nativamente).
 
 ## Opção 1: **Nativamente**
