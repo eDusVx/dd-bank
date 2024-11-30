@@ -61,6 +61,40 @@ describe('Cliente', () => {
             expect(() => Cliente.criar(clienteProps)).toThrow(ClienteException)
         })
 
+        it('deve lançar erro se a senha não tiver pelomenos 1 letra minúscula', () => {
+            const clienteProps = {
+                cpf: '12345678901',
+                nome: 'João Silva',
+                dataNascimento: new Date('1990-01-01'),
+                senha: 'SENHA123',
+            }
+
+            expect(() => Cliente.criar(clienteProps)).toThrow(ClienteException)
+        })
+
+        it('deve lançar erro se a senha não tiver pelomenos 1 caracter especial', () => {
+            const clienteProps = {
+                cpf: '12345678901',
+                nome: 'João Silva',
+                dataNascimento: new Date('1990-01-01'),
+                senha: 'SENHa123',
+            }
+
+            expect(() => Cliente.criar(clienteProps)).toThrow(ClienteException)
+        })
+
+        it('deve lançar erro se a senha carregada for inválida', () => {
+            const clienteProps = {
+                cpf: '12345678901',
+                nome: 'João Silva',
+                dataNascimento: new Date('1990-01-01'),
+                senha: 12345 as any,
+                contas: [],
+            }
+
+            expect(() => Cliente.carregar(clienteProps)).toThrow(ClienteException)
+        })
+
         it('deve lançar erro se a senha for inválida', () => {
             const clienteProps = {
                 cpf: '12345678901',
@@ -100,6 +134,18 @@ describe('Cliente', () => {
             expect(cliente.getNome()).toBe(clienteProps.nome)
             expect(cliente.getDataNascimento()).toEqual(clienteProps.dataNascimento)
             expect(cliente.getContas()).toEqual(clienteProps.contas)
+        })
+
+        it('deve retornar erro caso os array de contas não sejam array de numeros', () => {
+            const clienteProps = {
+                cpf: '12345678901',
+                nome: 'João Silva',
+                dataNascimento: new Date('1990-01-01'),
+                contas: ['1', '2'] as any,
+                senha: 'Senha@1234',
+            }
+
+            expect(() => Cliente.carregar(clienteProps)).toThrow(ClienteException)
         })
 
         it('deve retornar erro aoc arregar um cliente com dados invalido', () => {
@@ -142,7 +188,7 @@ describe('Cliente', () => {
             expect(() => cliente.verificarSenha('Senha@12345')).toThrow(SenhaInvalidaException)
         })
 
-        it('deve lançar erro se a senha fornecida for inválida', () => {
+        it('deve lançar erro se a senha fornecida para verificação for nula', () => {
             const clienteProps = {
                 cpf: '12345678901',
                 nome: 'João Silva',
@@ -152,7 +198,7 @@ describe('Cliente', () => {
 
             const cliente = Cliente.criar(clienteProps)
 
-            expect(() => cliente.verificarSenha('senha123')).toThrow(ClienteException)
+            expect(() => cliente.verificarSenha(null)).toThrow(ClienteException)
         })
     })
 })

@@ -138,7 +138,7 @@ export class Cliente {
         }
     }
 
-    private async setSenhaCarregada(senha: string) {
+    private setSenhaCarregada(senha: string) {
         try {
             if (isEmpty(senha)) throw new ClienteException('A senha do cliente não pode ser nula')
             if (!isString(senha)) throw new ClienteException('O senha do cliente deve ser do tipo string')
@@ -151,18 +151,7 @@ export class Cliente {
     public verificarSenha(senha: string): void {
         try {
             if (isEmpty(senha)) throw new ClienteException('A senha do cliente não pode ser nula.')
-            if (!isString(senha)) throw new ClienteException('A senha do cliente deve ser do tipo string.')
-            if (!isLength(senha, { min: 8, max: 20 }))
-                throw new ClienteException('A senha deve ter entre 8 e 20 caracteres.')
-            if (!matches(senha, /\d/)) throw new ClienteException('A senha deve conter pelo menos um número.')
-            if (!matches(senha, /[A-Z]/))
-                throw new ClienteException('A senha deve conter pelo menos uma letra maiúscula.')
-            if (!matches(senha, /[a-z]/))
-                throw new ClienteException('A senha deve conter pelo menos uma letra minúscula.')
-            if (!matches(senha, /[@$!%*?&#]/))
-                throw new ClienteException(
-                    'A senha deve conter pelo menos um caractere especial (@, $, !, %, *, ?, &, #).',
-                )
+                
             const verificarSenha = bcrypt.compareSync(senha, this.senha)
 
             if (!verificarSenha) throw new SenhaInvalidaException('A senha do cliente está incorreta')
