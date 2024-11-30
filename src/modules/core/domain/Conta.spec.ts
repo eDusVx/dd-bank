@@ -4,6 +4,7 @@ import { MovimentacaoFinanceira, TIPO_MOVIMENTACAO } from './MovimentacaoFinance
 import { STATUS_CONTA } from './Conta'
 import { StatusContaInvalidoEception } from './exceptions/StatusContaInvalido.exception'
 import { SaldoInsuficienteException } from './exceptions/SaldoInsuficiente.exception'
+import { StatusContaInexistenteException } from './exceptions/StatusContaInexistente.exception'
 
 describe('Conta', () => {
     describe('criação da conta', () => {
@@ -111,7 +112,7 @@ describe('Conta', () => {
             const props = { clienteId: '12345678901', numeroConta: 12345 }
             const conta = Conta.criar(props)
 
-            expect(() => conta.atualizarStatus('INVALIDO' as any)).toThrow(ContaException)
+            expect(() => conta.atualizarStatus('INVALIDO' as any)).toThrow(StatusContaInexistenteException)
         })
     })
 
